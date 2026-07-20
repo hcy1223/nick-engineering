@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nick Engineering"
+  short_description: "Apply Nick’s end-to-end engineering method"
+  default_prompt: "Use $nick-engineering to plan and deliver this change from product intent through production learning."
