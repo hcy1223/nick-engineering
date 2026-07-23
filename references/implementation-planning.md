@@ -6,9 +6,21 @@ Use this workflow when asked to create a technical implementation plan from a re
 
 1. If the input is a file path, read it as the source requirement. Otherwise treat the input as the feature description.
 2. Write the plan in the same language as the source. Preserve technical terms, identifiers, API names, and established domain language.
-3. Derive a lowercase hyphenated slug from the feature title.
+3. After choosing the plan boundary, derive a lowercase hyphenated slug from the selected slice title.
 4. Write to `docs/YYYY-MM-DD-implementation-plan-<slug>.md`.
 5. If `docs/` does not exist, ask the user which output directory to use before writing.
+
+## Choose a Small Plan Boundary
+
+Treat an Implementation Plan as the design for one independently verifiable vertical slice, not as the complete technical design for a User Story. A User Story may produce several plans over time.
+
+1. Identify the smallest slice that delivers observable behavior, retires a material risk, or creates valuable learning.
+2. Keep the slice end to end. Do not create separate plans for controllers, services, repositories, database work, or other technical layers.
+3. If the input is broader than one slice, list candidate plans ordered by value, risk, and real dependency.
+4. Create only the next plan unless the user explicitly requests multiple plans. Record later slices as candidate follow-up plans without detailed design or tasks.
+5. Derive the output slug from the selected slice rather than the entire parent User Story.
+
+Keep the plan just detailed enough to review the next change safely. Stabilize decisions that affect the current slice and make deferred decisions explicit; do not design the whole story in advance.
 
 ## Understand Before Designing
 
@@ -28,15 +40,15 @@ Ask for clarification only when an unresolved requirement or design decision wou
 - Introduce a design pattern only for a concrete force or credible variation axis. Record important patterns considered and rejected.
 - Preserve evidence-backed extension boundaries and avoid speculative flexibility.
 - Cover relevant API, data, security, resilience, performance, and user-experience concerns.
-- Use a Mermaid diagram that reflects the repository. Highlight changed components and show upstream and downstream dependencies.
+- When a diagram materially improves review, use Mermaid to reflect the repository, highlight changed components, and show upstream and downstream dependencies.
 
 ## Plan Implementation and Testing
 
-- Sequence high-level milestones as thin, independently verifiable vertical slices.
-- Name the first meaningful failing behavior test for each slice without expanding the plan into task-level instructions.
+- Name the first meaningful failing behavior test for the selected slice without expanding the plan into task-level instructions.
+- Identify a few likely task boundaries only to prove that the plan is executable; defer the complete checklist until plan review.
 - Prefer real domain collaborators and observable state or behavior. Use substitutes only at true system boundaries.
 - Include characterization, integration, contract, or end-to-end coverage where risks cross boundaries.
-- Keep detailed task breakdown out of the plan; create Implementation Tasks after the plan is reviewed.
+- Keep later plan candidates and detailed task breakdown out of the current execution scope.
 
 ## Plan Delivery and Learning
 
@@ -51,7 +63,8 @@ Before finishing, verify that:
 - Business outcomes connect to domain decisions, code changes, tests, delivery, and production signals.
 - Proposed changes match repository architecture, naming, and dependency conventions.
 - Reuse and pattern decisions explain semantics and design forces.
-- Milestones are vertical, reviewable, and testable rather than component inventories.
+- The plan covers one small vertical slice and leaves later slices as lightweight candidates.
+- Expected task boundaries are reviewable and testable rather than component inventories.
 - Compatibility, migration, rollback, and observability are proportional to risk.
 
 After writing:
@@ -59,4 +72,3 @@ After writing:
 1. Print the absolute output path.
 2. Summarize the key architectural decisions in 3–5 sentences.
 3. Suggest creating actionable work with the Implementation Task workflow.
-

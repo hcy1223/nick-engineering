@@ -18,9 +18,11 @@ Use this workflow when asked to break a reviewed implementation plan into small,
 
 ## Extract the Work
 
-Focus on the plan's Detailed Design, Testing & Implementation Strategy, Migration/Rollout/Operations, Risks, and Milestones. Trace every task back to a planned behavior, change point, migration, risk control, or verification need.
+Read the entire plan, focusing on its Outcome & Plan Boundary, Current System, Detailed Design, TDD & Execution Strategy, Delivery & Learning, and Risks. Trace every task back to a planned behavior, change point, migration, risk control, or verification need.
 
-Decompose work by vertical behavior, risk, or learning boundary rather than by technical layer. Keep high-level phases as milestones, then create tasks that are:
+Generate tasks only for the current plan boundary. Do not turn the parent User Story, out-of-scope behavior, or candidate follow-up plans into tasks. A small plan will usually need only one milestone; introduce multiple milestones only for real delivery, compatibility, or learning checkpoints.
+
+Decompose work by vertical behavior, risk, or learning boundary rather than by technical layer. Use one milestone by default; add more only for real delivery, compatibility, or learning checkpoints. Create tasks that are:
 
 - **Test-first**: The first action defines behavior with a failing automated test. For migrations or operations where automation is impractical, define a repeatable verification that fails before the change.
 - **Independent**: Tasks in the same milestone avoid unnecessary ordering and shared incomplete states.
@@ -29,6 +31,8 @@ Decompose work by vertical behavior, risk, or learning boundary rather than by t
 - **Verifiable**: Completion has observable evidence, not only a claim that code was written.
 
 Introduce dependencies only when behavior, schema order, compatibility, or risk makes them real. If a task remains too large, split it by acceptance example, failure mode, boundary, migration stage, or production-learning checkpoint.
+
+Use rolling-wave planning. Detail only work that is ready to execute now. When implementation reveals that a material plan assumption, boundary, or design decision is wrong, stop decomposing or executing affected tasks, update the plan, and regenerate the remaining task list.
 
 ## Define Every Task Through TDD
 
@@ -65,7 +69,7 @@ Copy and adapt `assets/implementation-task-template.md`. Use numbered milestone 
 
 Before finishing, verify that:
 
-- Every planned milestone and important risk has sufficient task coverage.
+- The current plan outcome and its important risks have sufficient task coverage.
 - Each task begins with a concrete failing test or verification.
 - Tasks are small, behavior-oriented, and independently executable within their milestone where possible.
 - Test doubles remain at system boundaries.

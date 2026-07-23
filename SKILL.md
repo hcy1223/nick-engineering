@@ -18,13 +18,14 @@ Working code is the floor, not the goal. Optimize for correct product decisions,
 
 1. Establish the outcome, users, constraints, and evidence of success before choosing a solution.
 2. Decompose from both directions. Work top-down from the outcome to behavioral slices and bottom-up from current code to reusable capabilities, constraints, and safe change points. Reconcile them before editing.
-3. Model the domain language and decisions. Prefer a small DSL when it compresses recurring domain knowledge rather than merely hiding syntax.
-4. Reuse existing behavior when semantics match. Introduce a design pattern only when it resolves a concrete force or variation axis more clearly than direct code.
-5. Implement through TDD as a design discipline. Grow behavior in small vertical slices.
-6. Prefer Chicago-style tests: real objects, observable state and behavior, and substitutes at true system boundaries. Avoid mocks that mirror implementation details.
-7. Review the completed change for code smells, accidental coupling, and the next credible extension. Refactor demonstrated problems without building speculative flexibility.
-8. Make delivery and operation part of the design: migration, compatibility, rollback, telemetry, ownership, and failure handling.
-9. Inspect production evidence and turn learning into the next product, model, test, or operational decision.
+3. Plan one small, independently verifiable vertical slice at a time. Allow one User Story to produce multiple Implementation Plans, and defer later plans until feedback makes them worth detailing.
+4. Model the domain language and decisions. Prefer a small DSL when it compresses recurring domain knowledge rather than merely hiding syntax.
+5. Reuse existing behavior when semantics match. Introduce a design pattern only when it resolves a concrete force or variation axis more clearly than direct code.
+6. Break down only the current plan into executable tasks, then implement through TDD as a design discipline.
+7. Prefer Chicago-style tests: real objects, observable state and behavior, and substitutes at true system boundaries. Avoid mocks that mirror implementation details.
+8. Review the completed change for code smells, accidental coupling, and the next credible extension. Refactor demonstrated problems without building speculative flexibility.
+9. Make delivery and operation part of the design: migration, compatibility, rollback, telemetry, ownership, and failure handling.
+10. Inspect production evidence and turn learning into the next requirement, plan, task, model, test, or operational decision.
 
 Treat clear code and behavioral tests as the most trustworthy description of current system behavior. Keep supplementary documentation focused on intent, constraints, decisions, and operational knowledge that code cannot express well.
 
@@ -50,7 +51,7 @@ Copy and adapt templates instead of editing them in place:
 - `assets/feature-plan-template.md` for feature discovery and planning.
 - `assets/engineering-task-template.md` for independently deliverable tasks.
 - `assets/implementation-plan-template.md` as the output document skeleton for a technical implementation plan.
-- `assets/implementation-task-template.md` as the output skeleton for a milestone-structured TDD task list.
+- `assets/implementation-task-template.md` as the output skeleton for the current plan's TDD task list.
 - `assets/production-learning-template.md` for turning operational evidence into decisions.
 
 Keep artifacts proportional to risk. A small change may need only a few lines; uncertainty, irreversibility, or operational risk justify more detail.

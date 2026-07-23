@@ -10,6 +10,7 @@
 - Keep each task focused and ideally smaller than one day.
 - Make tasks within the same milestone independently executable where possible.
 - Prefer observable behavior and real collaborators; substitute only true system boundaries.
+- Include only the current Implementation Plan; do not pull candidate follow-up plans into this task list.
 
 ## Milestone 1: <Outcome-oriented milestone>
 
@@ -57,4 +58,3 @@
 ## Milestone 2: <Next outcome-oriented milestone>
 
 <Repeat milestone and task sections.>
-

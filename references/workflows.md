@@ -31,9 +31,9 @@ Prefer vertical tasks over separate layer tasks such as “add repository,” �
 
 ## Implementation Planning
 
-Create an implementation plan after the outcome and scope are understood, when the change needs an explicit technical path. Read `references/implementation-planning.md` for the generation workflow, then copy `assets/implementation-plan-template.md` as the output skeleton.
+Create an implementation plan after the outcome and scope are understood, when the next vertical slice needs an explicit technical path. Keep each plan small and independently verifiable. One User Story may produce several plans; detail only the next worthwhile slice and let feedback shape later plans. Read `references/implementation-planning.md` for the generation workflow, then copy `assets/implementation-plan-template.md` as the output skeleton.
 
-Feature Plans and Engineering Tasks describe what should be delivered and why. Implementation Plans and Implementation Tasks describe how an accepted outcome will be changed and verified in the codebase. Keep them separate when that distinction improves review; combine lightweight artifacts for small, low-risk changes.
+Feature Plans and User Stories describe broader value and intent. Each Implementation Plan describes how one accepted vertical slice will be changed and verified; its Implementation Tasks describe the immediate Red–Green–Refactor work. Keep artifacts separate when that improves review, and combine lightweight artifacts for very small, low-risk changes.
 
 ## Task Implementation
 
