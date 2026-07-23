@@ -29,6 +29,12 @@ Each task should include:
 
 Prefer vertical tasks over separate layer tasks such as “add repository,” “add service,” and “add controller.” Split by behavior, risk, or learning boundary. Use `assets/engineering-task-template.md` as a starting point.
 
+## Implementation Planning
+
+Create an implementation plan after the outcome and scope are understood, when the change needs an explicit technical path. Read `references/implementation-planning.md` for the generation workflow, then copy `assets/implementation-plan-template.md` as the output skeleton.
+
+Feature Plans and Engineering Tasks describe what should be delivered and why. Implementation Plans and Implementation Tasks describe how an accepted outcome will be changed and verified in the codebase. Keep them separate when that distinction improves review; combine lightweight artifacts for small, low-risk changes.
+
 ## Task Implementation
 
 1. Reconstruct intent from the task, current code, behavioral tests, and production evidence.
@@ -42,6 +48,8 @@ Prefer vertical tasks over separate layer tasks such as “add repository,” �
 9. Record remaining risk and define how the change will be observed in production.
 
 Do not preserve a poor design merely because it works. Do not introduce abstractions for hypothetical reuse. Prefer code that makes the domain decision obvious.
+
+To create a persistent task list from an implementation plan, read `references/implementation-tasks.md`, then copy `assets/implementation-task-template.md`. Record a concrete Red–Green–Refactor path, expected code impact, verification evidence, and any deliberately deferred smell or extension for every task.
 
 ## Git Workflow
 

@@ -40,9 +40,13 @@ nick-engineering/
 ├── assets/
 │   ├── engineering-task-template.md
 │   ├── feature-plan-template.md
+│   ├── implementation-plan-template.md
+│   ├── implementation-task-template.md
 │   └── production-learning-template.md
 └── references/
     ├── delivery-and-operations.md
+    ├── implementation-planning.md
+    ├── implementation-tasks.md
     ├── implementation-thinking.md
     ├── java-style.md
     ├── modeling-and-dsl.md
@@ -52,7 +56,7 @@ nick-engineering/
 
 - `SKILL.md` 保存核心原则、工作循环和渐进加载路由。
 - `references/` 保存按任务加载的详细方法。
-- `assets/` 保存 Feature Plan、工程任务和生产学习模板。
+- `assets/` 保存 Feature Plan、工程任务、Implementation Plan、Implementation Task 和生产学习模板。
 - `agents/openai.yaml` 保存 Codex 界面元数据与默认调用提示。
 
 ## 安装
