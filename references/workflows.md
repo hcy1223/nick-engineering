@@ -75,15 +75,15 @@ To create a persistent task list from an implementation plan, read `references/i
 
 ## Git Workflow
 
-Keep history reviewable and delivery intentional.
+Keep history reviewable and delivery intentional. Read `references/git-workflow.md` before staging or committing changes.
 
 1. Inspect repository instructions, branch state, and existing changes before editing. Task implementation requires `git status --porcelain` to be empty.
 2. Preserve unrelated user work; never discard or rewrite it without explicit authorization.
 3. Work in small coherent increments and keep generated or formatting noise out of behavioral changes.
 4. Review the complete diff and run relevant verification before committing.
-5. Write an imperative commit subject that states the outcome; use the body for rationale, constraints, and migration notes when needed.
+5. Write an English Conventional Commit message that states the outcome.
 6. Rebase or merge according to repository policy. Do not rewrite shared history casually.
 7. Open a review with outcome, design choices, evidence, risks, rollout, rollback, and production signals.
 8. Treat merge as the beginning of operational verification, not the end of ownership.
 
-Prefer one coherent commit when the change is small. Use multiple commits when each is independently understandable and helps review, bisecting, or rollback. Never manufacture noisy “checkpoint” history.
+Use the detailed rules in `references/git-workflow.md` for commit types, scopes, breaking changes, message quality, commit boundaries, and repository-policy conflicts.

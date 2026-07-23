@@ -52,7 +52,8 @@ Treat clear code and behavioral tests as the most trustworthy description of cur
 Load only the references needed for the current task:
 
 - Understanding and confirming a raw feature request before any planning or implementation: [references/requirements-analysis.md](references/requirements-analysis.md)
-- Product intent, feature slicing, task creation, implementation, and Git workflow: [references/workflows.md](references/workflows.md)
+- Product intent, feature slicing, task creation, and implementation: [references/workflows.md](references/workflows.md)
+- Git safety, commit boundaries, and English Conventional Commit messages: [references/git-workflow.md](references/git-workflow.md)
 - Creating a repository-grounded technical implementation plan from a requirement file or feature description: [references/implementation-planning.md](references/implementation-planning.md)
 - Breaking a reviewed implementation plan into small, executable Red–Green–Refactor tasks: [references/implementation-tasks.md](references/implementation-tasks.md)
 - Requirement decomposition, code reuse, design-pattern judgment, implementation review, and appropriate extensibility: [references/implementation-thinking.md](references/implementation-thinking.md)

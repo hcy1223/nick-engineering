@@ -20,6 +20,7 @@
 - 把清晰的代码和行为测试视为系统当前行为最可信的文档。
 - 让产品决策、领域模型、代码、交付、生产运行和反馈学习形成闭环。
 - 使用现代 Java 表达不可变性、封闭类型域、穷举决策和数据导向设计。
+- 使用英文 Conventional Commits，让提交历史可读、可检索并支持交付自动化。
 
 ## 能做什么
 
@@ -61,6 +62,7 @@ nick-engineering/
 │   └── production-learning-template.md
 └── references/
     ├── delivery-and-operations.md
+    ├── git-workflow.md
     ├── implementation-planning.md
     ├── implementation-tasks.md
     ├── implementation-thinking.md
