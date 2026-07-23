@@ -141,19 +141,75 @@ git -C "$HOME/.agents/skills/nick-engineering" pull
 
 ## 使用
 
-如果目标 Agent 支持具名 Skill，可以使用它支持的显式调用语法，例如：
+把 Plan、Task 和 Implementation 作为三个独立步骤使用。Nick 会在每个阶段结束后停止，等待用户 Review 和明确授权，不会从模糊需求直接跳到写代码。
+
+以下示例使用 `$nick-engineering` 表示目标 Agent 的具名 Skill 调用语法；如果平台使用其他语法，请替换为对应形式。
+
+### 1. 让 Nick 创建 Implementation Plan
+
+可以直接描述需求：
 
 ```text
-Use $nick-engineering to clarify this feature request like a senior developer. When it is sufficiently clear, create only the Implementation Plan and stop.
+使用 $nick-engineering 分析下面的需求：
+
+<需求描述>
+
+如果需求不清晰，先从资深开发者角度提出澄清问题并等待我的回答。
+需求足够清晰后，只创建一个覆盖下一垂直切片的 Implementation Plan，然后停止。
 ```
 
-或使用中文：
+也可以提供已有需求文档：
 
 ```text
-使用 $nick-engineering 从资深开发者角度澄清这个功能需求；足够清晰后，只创建 Implementation Plan，然后停止。
+使用 $nick-engineering 分析 requirements/<feature>.md。
+需求足够清晰后创建 Implementation Plan；只输出 Plan，不要拆 Task 或修改代码。
 ```
 
-如果目标 Agent 不支持 `$skill-name` 语法，直接要求它读取 `SKILL.md` 并执行指定工作流。`$nick-engineering` 只是某些 Agent 的调用适配，不是核心方法的一部分。
+Nick 会先检查现有代码和测试。需求仍有关键歧义时，它只提出问题；达到 Requirement Ready 后，它创建 Plan 并停止，等待 Review。
+
+### 2. 让 Nick 根据 Plan 创建 Task
+
+Review Plan 后，明确表示批准并提供路径：
+
+```text
+我已经 Review 并批准这个 Implementation Plan：
+docs/<implementation-plan>.md
+
+使用 $nick-engineering 根据该 Plan 拆分可执行的 TDD Task。
+运用你的工程经验确定行为切片、依赖和顺序，只输出 Task 列表，然后停止。
+```
+
+如果 Plan 是 Nick 在当前对话中刚刚创建的，也可以直接回复：
+
+```text
+这个 Plan 没问题，我批准它。请使用 $nick-engineering 根据该 Plan 创建 Task，然后停止。
+```
+
+Nick 会结合 Plan、现有代码、架构、领域模型、风险和测试策略进行拆解，而不是机械复制 Plan 章节。Task 创建完成后不会开始实现。
+
+### 3. 让 Nick 根据 Task 实现
+
+Review Task 列表后，明确批准一个具体 Task 并要求执行：
+
+```text
+我已经 Review 并批准 tasks/<task-list>.md 中的 Task 1.1。
+
+使用 $nick-engineering 执行 Task 1.1。
+开始前检查 git status；只有工作区 clean 才能按 TDD 开始实现。
+```
+
+Nick 会在每个已批准 Task 开始前运行 `git status --porcelain`。如果存在 staged、unstaged 或 untracked 文件，它只报告状态并停止；工作区 clean 时，才会从失败测试开始执行 Red–Green–Refactor。完成实现不等于授权提交，仍需用户另外明确要求 commit。
+
+### 不支持具名 Skill 的 Agent
+
+如果目标 Agent 不支持 `$skill-name` 语法，先要求它读取 Skill，再附上上述对应阶段的指令：
+
+```text
+Read /path/to/nick-engineering/SKILL.md completely and apply it to this task.
+Load only the references routed by SKILL.md for the current workflow stage.
+```
+
+`$nick-engineering` 只是某些 Agent 的调用适配，不是核心方法的一部分。
 
 ## 渐进加载
 
