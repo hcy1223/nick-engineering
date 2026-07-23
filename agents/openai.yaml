@@ -1,4 +1,4 @@
 interface:
   display_name: "Nick Engineering"
-  short_description: "Apply Nick’s end-to-end engineering method"
-  default_prompt: "Use $nick-engineering to plan and deliver this change from product intent through production learning."
+  short_description: "Clarify, plan, task, then implement safely"
+  default_prompt: "Use $nick-engineering to clarify vague requirements, create only a plan when ready, and create only its tasks after plan approval. Implement only after I approve a task and explicitly ask to execute it; before writing code, require a clean Git worktree."

@@ -2,6 +2,17 @@
 
 Use this workflow when asked to create a technical implementation plan from a requirement document, issue, or feature description. Produce a review-ready plan grounded in the current repository, not a generic architecture proposal.
 
+## Require Requirement Ready
+
+Do not create a plan while material requirement ambiguity remains. First read `references/requirements-analysis.md`, analyze the requirement and current system, and assess the Requirement Ready Gate.
+
+The gate is satisfied when:
+
+- The problem, beneficiary, desired behavior, acceptance examples, scope, constraints, and material decisions are sufficiently clear; and
+- The next small vertical slice can be selected without guessing about product behavior or important engineering constraints.
+
+If the gate is not satisfied, ask focused clarification questions and stop before choosing a plan boundary or creating an output file. Reassess after the user answers. If the gate is satisfied, create the plan without requiring a separate confirmation step.
+
 ## Resolve the Input and Output
 
 1. If the input is a file path, read it as the source requirement. Otherwise treat the input as the feature description.
@@ -31,7 +42,7 @@ Keep the plan just detailed enough to review the next change safely. Stabilize d
 5. Identify characterization gaps where current behavior needs protection before modification.
 6. Reconcile the desired behavior with the current design and name the concrete change points.
 
-Ask for clarification only when an unresolved requirement or design decision would materially alter scope, architecture, compatibility, data, or delivery. Otherwise record a small explicit assumption and continue.
+Ask for clarification when an unresolved requirement or design decision would materially alter scope, behavior, architecture, compatibility, data, security, success criteria, or delivery. Do not replace a missing product decision with an engineering assumption. Record only small, reversible assumptions that do not change the confirmed outcome.
 
 ## Make Design Decisions
 
@@ -70,5 +81,5 @@ Before finishing, verify that:
 After writing:
 
 1. Print the absolute output path.
-2. Summarize the key architectural decisions in 3–5 sentences.
-3. Suggest creating actionable work with the Implementation Task workflow.
+2. State that the Implementation Plan is ready for review.
+3. Stop. Do not generate a task list, edit code, or begin implementation.

@@ -1,5 +1,11 @@
 # Engineering Workflows
 
+## Requirement Understanding
+
+Treat a raw feature description, change request, or “implement this” prompt as authorization to analyze the requirement and create one Implementation Plan when it becomes ready. Read `references/requirements-analysis.md` and inspect the relevant repository behavior. If material ambiguity remains, ask focused questions and stop. Do not create a plan while the requirement is vague.
+
+When the requirement is sufficiently clear to select the next vertical slice without guessing, proceed to Implementation Planning. Output only that plan and stop; do not create tasks or code.
+
 ## Feature Planning
 
 Start with the decision, not the requested mechanism.
@@ -16,7 +22,9 @@ Reject feature plans that are only component inventories or implementation check
 
 ## Task Creation
 
-Create tasks that produce a verifiable outcome and can be reviewed independently.
+Create tasks only from an Implementation Plan the user has explicitly accepted as OK, approved, or ready to proceed. A direct approval response to the plan just produced authorizes Task Creation; the user does not need to issue a separate command or repeat the plan path. Tasks must produce a verifiable outcome and be reviewable independently.
+
+Use professional engineering judgment rather than translating plan headings into a checklist. Inspect the relevant code and tests, reconcile top-down behavior with bottom-up change points, and choose task boundaries and ordering based on behavior, dependencies, uncertainty, and risk. Preserve the approved plan's outcome and scope; surface a blocking contradiction instead of silently redesigning it.
 
 Each task should include:
 
@@ -29,15 +37,29 @@ Each task should include:
 
 Prefer vertical tasks over separate layer tasks such as “add repository,” “add service,” and “add controller.” Split by behavior, risk, or learning boundary. Use `assets/engineering-task-template.md` as a starting point.
 
+After producing the task list, stop. Task review and approval, an explicit request to execute a task, and a clean Git worktree are required before implementation begins.
+
 ## Implementation Planning
 
-Create an implementation plan after the outcome and scope are understood, when the next vertical slice needs an explicit technical path. Keep each plan small and independently verifiable. One User Story may produce several plans; detail only the next worthwhile slice and let feedback shape later plans. Read `references/implementation-planning.md` for the generation workflow, then copy `assets/implementation-plan-template.md` as the output skeleton.
+Create an implementation plan only after the Requirement Ready Gate is satisfied, when the next vertical slice needs an explicit technical path. Keep each plan small and independently verifiable. One User Story may produce several plans; detail only the next worthwhile slice and let feedback shape later plans. Read `references/implementation-planning.md` for the generation workflow, then copy `assets/implementation-plan-template.md` as the output skeleton.
 
 Feature Plans and User Stories describe broader value and intent. Each Implementation Plan describes how one accepted vertical slice will be changed and verified; its Implementation Tasks describe the immediate Red–Green–Refactor work. Keep artifacts separate when that improves review, and combine lightweight artifacts for very small, low-risk changes.
 
 ## Task Implementation
 
-1. Reconstruct intent from the task, current code, behavioral tests, and production evidence.
+Enter this stage only when the user has reviewed and approved a concrete task and explicitly asks to execute it. A raw feature request, Requirement Ready state, reviewed plan, or unapproved task list is not implementation authorization.
+
+Before beginning each approved task and writing or modifying any source, test, configuration, schema, migration, or generated implementation file:
+
+1. Run `git status --porcelain` in the target repository.
+2. Continue only when it produces no output.
+3. If it reports staged, unstaged, or untracked files, show the relevant status and stop. Ask the user to resolve the worktree or explicitly direct a separate commit, stash, or cleanup action.
+4. If the target is not a Git repository, stop and ask how the user wants to establish a safe baseline.
+5. Do not automatically commit, stash, reset, discard, delete, or hide changes to manufacture a clean state.
+
+Read-only inspection is allowed while the gate is closed. Writing the first failing test is implementation work, so the clean-worktree check must happen before RED begins.
+
+1. Reconstruct intent from the approved task, current code, behavioral tests, and production evidence.
 2. Resolve ambiguity that could change the outcome; otherwise make a small, explicit assumption.
 3. Choose the thinnest behavioral slice and write the next failing test.
 4. Implement the simplest coherent design that makes it pass.
@@ -55,7 +77,7 @@ To create a persistent task list from an implementation plan, read `references/i
 
 Keep history reviewable and delivery intentional.
 
-1. Inspect repository instructions, branch state, and existing changes before editing.
+1. Inspect repository instructions, branch state, and existing changes before editing. Task implementation requires `git status --porcelain` to be empty.
 2. Preserve unrelated user work; never discard or rewrite it without explicit authorization.
 3. Work in small coherent increments and keep generated or formatting noise out of behavioral changes.
 4. Review the complete diff and run relevant verification before committing.

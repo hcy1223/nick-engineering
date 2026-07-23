@@ -1,13 +1,16 @@
 # Implementation Tasks
 
-Use this workflow when asked to break a reviewed implementation plan into small, test-first tasks. Produce an executable task list whose sequence grows behavior through Red–Green–Refactor.
+Use this workflow after the user approves an Implementation Plan or explicitly asks to break an approved plan into small, test-first tasks. Produce an executable task list whose sequence grows behavior through Red–Green–Refactor.
 
 ## Check the Prerequisite
 
-1. Require a path to an implementation plan.
-2. If the path is missing or the file does not exist, stop and ask for a valid plan path.
-3. If no plan exists, suggest creating one with the Implementation Planning workflow.
-4. Do not invent plan content from a title or partial filename.
+1. Require an Implementation Plan that the user has explicitly accepted as OK, approved, or ready to proceed.
+2. A direct approval response to the plan just produced is sufficient authorization for Task Creation. Infer that plan's path from the current conversation; do not force the user to repeat it.
+3. Otherwise require the user to provide the plan path and identify it as approved for task breakdown.
+4. If the path is missing, ambiguous, or does not exist, stop and ask for a valid plan path.
+5. If the plan is still under review, stop and ask the user to resolve or approve it.
+6. If no plan exists, suggest creating one with the Implementation Planning workflow.
+7. Do not invent plan content from a title or partial filename.
 
 ## Resolve the Output
 
@@ -20,7 +23,7 @@ Use this workflow when asked to break a reviewed implementation plan into small,
 
 Read the entire plan, focusing on its Outcome & Plan Boundary, Current System, Detailed Design, TDD & Execution Strategy, Delivery & Learning, and Risks. Trace every task back to a planned behavior, change point, migration, risk control, or verification need.
 
-Generate tasks only for the current plan boundary. Do not turn the parent User Story, out-of-scope behavior, or candidate follow-up plans into tasks. A small plan will usually need only one milestone; introduce multiple milestones only for real delivery, compatibility, or learning checkpoints.
+Generate tasks only for the current plan boundary. Do not turn the parent User Story, out-of-scope behavior, or candidate follow-up plans into tasks.
 
 Decompose work by vertical behavior, risk, or learning boundary rather than by technical layer. Use one milestone by default; add more only for real delivery, compatibility, or learning checkpoints. Create tasks that are:
 
@@ -33,6 +36,17 @@ Decompose work by vertical behavior, risk, or learning boundary rather than by t
 Introduce dependencies only when behavior, schema order, compatibility, or risk makes them real. If a task remains too large, split it by acceptance example, failure mode, boundary, migration stage, or production-learning checkpoint.
 
 Use rolling-wave planning. Detail only work that is ready to execute now. When implementation reveals that a material plan assumption, boundary, or design decision is wrong, stop decomposing or executing affected tasks, update the plan, and regenerate the remaining task list.
+
+## Apply Engineering Judgment
+
+Task Creation is an engineering design activity, not a formatting conversion. Re-read the approved plan and inspect the relevant current code and behavioral tests before choosing task boundaries.
+
+- Reconcile the desired behavior with existing architecture, domain language, reusable capabilities, constraints, and safe change points.
+- Choose vertical behavior slices and order them by real dependency, uncertainty, and risk. Prefer an early task that disproves a dangerous assumption or establishes the thinnest end-to-end behavior.
+- Use expertise in domain modeling, architecture, TDD, migrations, compatibility, observability, rollout, and rollback to add necessary executable detail that the approved plan intentionally leaves at planning level.
+- Make each task useful to an implementer: identify the behavior to prove, likely code area, boundary interactions, completion evidence, and any genuine prerequisite.
+- Do not mechanically create one task per plan heading, component, class, or architectural layer.
+- Do not silently change the approved outcome, scope, or key design decision. If the plan contains a contradiction or a material gap that prevents responsible decomposition, surface the issue and stop instead of guessing.
 
 ## Define Every Task Through TDD
 
@@ -80,4 +94,4 @@ After writing:
 
 1. Print the absolute output path.
 2. Identify the first unblocked task.
-3. Suggest starting work on that task through the Task Implementation workflow.
+3. Stop for task-list review. Do not edit implementation or test code. Suggest starting work through the Task Implementation workflow only after the user approves the task list, asks to execute a task, and the target repository has a clean Git worktree.

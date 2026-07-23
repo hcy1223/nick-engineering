@@ -25,11 +25,26 @@
 
 在实现具体需求时，这个 Skill 会引导 AI Agent：
 
-1. 同时采用自上而下和自下而上的工作分解。自上而下从目标、验收行为和垂直切片展开；自下而上理解现有代码、测试、约束和可复用能力，并让两种视角在具体改动点会合。
-2. 优先复用现有代码中语义一致的领域知识与行为，判断何时直接复用、组合、适配或暂时不抽象；只有存在明确设计压力和变化轴时才采用设计模式。
-3. 在需求实现后重新阅读完整变更，识别命名、职责、重复知识、条件复杂度、耦合、过度 Mock 和推测性通用化等 code smell，并保留有证据支持的扩展点。
-4. 常常使用 TDD 驱动实现，通过小步 Red–Green–Refactor 让测试参与接口、职责和边界设计。
-5. 采用滚动式敏捷规划：一个 Implementation Plan 只覆盖一个可独立验证的垂直切片，一个 User Story 可以逐步产生多个 Plan；只为当前 Plan 拆分 Task，并用交付反馈决定下一步。
+1. 当需求模糊时，以资深开发者视角检查现有系统并提出高价值澄清问题；需求足够清晰后，只输出 Implementation Plan 并停止。用户明确表示 Plan 没问题后，再进入 Task 拆解。
+2. 同时采用自上而下和自下而上的工作分解。自上而下从目标、验收行为和垂直切片展开；自下而上理解现有代码、测试、约束和可复用能力，并让两种视角在具体改动点会合。
+3. 优先复用现有代码中语义一致的领域知识与行为，判断何时直接复用、组合、适配或暂时不抽象；只有存在明确设计压力和变化轴时才采用设计模式。
+4. 在需求实现后重新阅读完整变更，识别命名、职责、重复知识、条件复杂度、耦合、过度 Mock 和推测性通用化等 code smell，并保留有证据支持的扩展点。
+5. 常常使用 TDD 驱动实现，通过小步 Red–Green–Refactor 让测试参与接口、职责和边界设计。
+6. 采用滚动式敏捷规划：一个 Implementation Plan 只覆盖一个可独立验证的垂直切片，一个 User Story 可以逐步产生多个 Plan；用户认可当前 Plan 后，Nick 运用架构、领域、TDD、兼容性、交付和生产运行经验拆分可执行 Task，而不是机械复制 Plan 章节。
+
+## 阶段门
+
+```text
+Requirement Understanding
+    --需求足够清晰--> Implementation Plan
+    --用户批准--> TDD Task Breakdown
+    --Task 已评审批准 + 用户要求执行 + Git clean--> Task Implementation
+    --交付与观察--> Production Learning
+```
+
+最初的“帮我实现这个需求”会启动需求分析。需求模糊时，Agent 只提出澄清问题并等待回答；达到 Requirement Ready 后，Agent 自动创建一个小型 Implementation Plan，然后停止。用户随后明确回复“OK”“可以”“按这个 Plan”或同等含义时，即授权 Nick 为刚刚确认的 Plan 创建 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
+
+如果 Git 工作区存在 staged、unstaged 或 untracked 文件，Nick 只报告状态并停止，不会自动 commit、stash、reset、删除或隐藏已有改动来绕过门禁。Plan 和 Task 文件若保存在目标仓库中，也需要先由用户决定如何纳入干净基线。
 
 ## 目录
 
@@ -51,6 +66,7 @@ nick-engineering/
     ├── implementation-thinking.md
     ├── java-style.md
     ├── modeling-and-dsl.md
+    ├── requirements-analysis.md
     ├── testing.md
     └── workflows.md
 ```
@@ -126,13 +142,13 @@ git -C "$HOME/.agents/skills/nick-engineering" pull
 如果目标 Agent 支持具名 Skill，可以使用它支持的显式调用语法，例如：
 
 ```text
-Use $nick-engineering to plan and implement this feature.
+Use $nick-engineering to clarify this feature request like a senior developer. When it is sufficiently clear, create only the Implementation Plan and stop.
 ```
 
 或使用中文：
 
 ```text
-使用 $nick-engineering 规划这个功能，并拆分为可独立交付的工程任务。
+使用 $nick-engineering 从资深开发者角度澄清这个功能需求；足够清晰后，只创建 Implementation Plan，然后停止。
 ```
 
 如果目标 Agent 不支持 `$skill-name` 语法，直接要求它读取 `SKILL.md` 并执行指定工作流。`$nick-engineering` 只是某些 Agent 的调用适配，不是核心方法的一部分。
