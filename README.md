@@ -1,6 +1,6 @@
 # Nick Engineering
 
-`nick-engineering` 是一套面向 Codex 的个人工程方法 Skill，沉淀 Nick 在代码、架构、领域建模、测试、交付和生产运行方面的实践。
+`nick-engineering` 是一套面向 AI Agent 的个人工程方法 Skill，沉淀 Nick 在代码、架构、领域建模、测试、交付和生产运行方面的实践。核心内容不依赖某个模型、厂商或 Agent 产品；不同平台只需要提供自己的发现、安装和调用适配。
 
 它把工程工作视为一个持续学习循环：
 
@@ -23,7 +23,7 @@
 
 ## 能做什么
 
-在实现具体需求时，这个 Skill 会引导 Codex：
+在实现具体需求时，这个 Skill 会引导 AI Agent：
 
 1. 同时采用自上而下和自下而上的工作分解。自上而下从目标、验收行为和垂直切片展开；自下而上理解现有代码、测试、约束和可复用能力，并让两种视角在具体改动点会合。
 2. 优先复用现有代码中语义一致的领域知识与行为，判断何时直接复用、组合、适配或暂时不抽象；只有存在明确设计压力和变化轴时才采用设计模式。
@@ -58,25 +58,56 @@ nick-engineering/
 - `SKILL.md` 保存核心原则、工作循环和渐进加载路由。
 - `references/` 保存按任务加载的详细方法。
 - `assets/` 保存 Feature Plan、工程任务、Implementation Plan、Implementation Task 和生产学习模板。
-- `agents/openai.yaml` 保存 Codex 界面元数据与默认调用提示。
+- `agents/openai.yaml` 是 OpenAI/Codex 的可选界面适配，不属于核心方法。
 
-## 安装
+## 可移植性
 
-Codex 从 `~/.agents/skills` 加载个人 Skill，并支持指向其他源码目录的符号链接。
+- `SKILL.md`、`references/` 和 `assets/` 构成跨 Agent 的核心。
+- `agents/` 保存特定 Agent 平台需要的可选元数据。
+- 核心工作流不假设自定义 Slash Command、`$ARGUMENTS` 或某个固定工具名称。
+- Agent 可以使用自己已有的代码搜索、文件读写、测试和版本控制能力执行方法。
+- 如果目标 Agent 不支持原生 Skill，只需把仓库加入上下文并要求它完整读取 `SKILL.md`。
 
-### 使用 Skill Installer
+## 安装与接入
 
-在 Codex 中调用内置安装器，并要求它从本仓库安装：
+### 支持 Skill 的 AI Agent
+
+把仓库克隆或链接到目标 Agent 的 Skill 搜索目录。具体目录、刷新方式和显式调用语法以该 Agent 的文档为准：
+
+```bash
+git clone https://github.com/hcy1223/nick-engineering.git \
+  /path/to/agent-skills/nick-engineering
+```
+
+如果需要持续维护源码，可以把仓库保留在常规开发目录，再从 Agent 的 Skill 目录创建符号链接：
+
+```bash
+git clone https://github.com/hcy1223/nick-engineering.git "$HOME/src/nick-engineering"
+ln -s "$HOME/src/nick-engineering" \
+  /path/to/agent-skills/nick-engineering
+```
+
+### 不原生支持 Skill 的 AI Agent
+
+把仓库克隆到任意可访问位置，然后在任务中提供入口：
+
+```text
+Read /path/to/nick-engineering/SKILL.md completely and apply it to this task.
+Load only the references routed by SKILL.md and use the relevant assets as output templates.
+```
+
+### OpenAI/Codex
+
+OpenAI/Codex 可以使用仓库中的 `agents/openai.yaml` 作为界面元数据，并从个人 Skill 目录发现该 Skill。
+
+使用 Skill Installer：
+
 
 ```text
 使用 $skill-installer 从 https://github.com/hcy1223/nick-engineering 安装 nick-engineering。
 ```
 
-Codex 会自动检测新安装的 Skill；如果没有出现，再重启 Codex。
-
-### 直接安装
-
-适合只需要使用，并通过 Git 拉取更新的场景：
+或者直接克隆：
 
 ```bash
 mkdir -p "$HOME/.agents/skills"
@@ -90,22 +121,9 @@ git clone https://github.com/hcy1223/nick-engineering.git \
 git -C "$HOME/.agents/skills/nick-engineering" pull
 ```
 
-### 源码与安装位置分离
-
-适合持续完善 Skill，并用独立仓库管理源码的场景：
-
-```bash
-git clone https://github.com/hcy1223/nick-engineering.git "$HOME/src/nick-engineering"
-mkdir -p "$HOME/.agents/skills"
-ln -s "$HOME/src/nick-engineering" \
-  "$HOME/.agents/skills/nick-engineering"
-```
-
-这种方式让源码留在常规开发目录中，同时让 Codex 通过符号链接发现它。请确保目标链接不存在，并根据自己的源码位置调整路径。
-
 ## 使用
 
-安装后启动一个新的 Codex 任务并显式调用：
+如果目标 Agent 支持具名 Skill，可以使用它支持的显式调用语法，例如：
 
 ```text
 Use $nick-engineering to plan and implement this feature.
@@ -117,23 +135,29 @@ Use $nick-engineering to plan and implement this feature.
 使用 $nick-engineering 规划这个功能，并拆分为可独立交付的工程任务。
 ```
 
-Codex 也可以根据 `SKILL.md` 中的 `description` 在相关任务中自动选择该 Skill。如果新任务中没有发现它，请确认安装路径和目录名，然后重启 Codex。
+如果目标 Agent 不支持 `$skill-name` 语法，直接要求它读取 `SKILL.md` 并执行指定工作流。`$nick-engineering` 只是某些 Agent 的调用适配，不是核心方法的一部分。
 
 ## 渐进加载
 
-1. Codex 先用名称和描述判断是否触发。
-2. 触发后加载 `SKILL.md` 的核心方法和路由。
-3. 根据当前任务读取相关的 `references/` 文件。
-4. 需要创建计划或记录时，复制并填写 `assets/` 中的模板。
+1. Agent 先读取 `SKILL.md` 的名称、描述、核心方法和路由。
+2. Agent 根据当前任务加载相关的 `references/` 文件。
+3. 需要创建计划或记录时，复制并填写 `assets/` 中的模板。
+4. 平台适配文件只负责发现和调用，不复制核心工程规则。
 
 这样可以保持核心方法稳定，同时避免无关细节占用上下文。
 
 ## 开发与验证
 
-保持 `SKILL.md` 精简，把详细规则放入对应 reference，不要在多个文件中重复同一原则。修改后在 Codex 中调用内置创建器进行验证：
+保持 `SKILL.md` 精简，把详细规则放入对应 reference，不要在多个文件中重复同一原则。验证时应分别检查：
+
+- 核心 Markdown 路由、相对链接和模板是否完整。
+- 目标 Agent 是否能发现并加载 `SKILL.md`。
+- 平台专属元数据是否与核心 Skill 保持一致。
+
+在 OpenAI/Codex 环境中，可以调用内置创建器进行结构验证：
 
 ```text
 使用 $skill-creator 验证当前仓库中的 nick-engineering Skill。
 ```
 
-更多背景参见 [Codex Build skills documentation](https://learn.chatgpt.com/docs/build-skills)。
+这项验证确认 OpenAI/Codex 兼容性，不代表其他 Agent 平台的安装或调用方式完全相同。OpenAI/Codex 适配背景参见 [Codex Build skills documentation](https://learn.chatgpt.com/docs/build-skills)。

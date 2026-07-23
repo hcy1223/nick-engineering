@@ -5,6 +5,8 @@ description: Apply Nick's engineering method across product discovery, implement
 
 # Nick Engineering
 
+Apply this method independently of the host AI agent. Keep the core workflow, references, and output artifacts free of vendor-specific commands. Treat agent-specific metadata, invocation syntax, and installation paths as optional adapters.
+
 Treat engineering as one learning loop:
 
 1. Build the right thing.
