@@ -26,7 +26,7 @@
 
 在实现具体需求时，这个 Skill 会引导 AI Agent：
 
-1. 当需求模糊时，以资深开发者视角检查现有系统并提出高价值澄清问题；需求足够清晰后，只输出 Implementation Plan 并停止。用户明确表示 Plan 没问题后，再进入 Task 拆解。
+1. 接受一句话、Issue 或已有 Story 文档作为需求入口，以资深开发者视角检查现有系统并进行多轮澄清；需求足够清晰后，为多切片 Story 创建轻量 Plan Map，并只详细设计第一个 Implementation Plan。
 2. 同时采用自上而下和自下而上的工作分解。自上而下从目标、验收行为和垂直切片展开；自下而上理解现有代码、测试、约束和可复用能力，并让两种视角在具体改动点会合。
 3. 优先复用现有代码中语义一致的领域知识与行为，判断何时直接复用、组合、适配或暂时不抽象；只有存在明确设计压力和变化轴时才采用设计模式。
 4. 在需求实现后重新阅读完整变更，识别命名、职责、重复知识、条件复杂度、耦合、过度 Mock 和推测性通用化等 code smell，并保留有证据支持的扩展点。
@@ -36,14 +36,14 @@
 ## 阶段门
 
 ```text
-Requirement Understanding
-    --需求足够清晰--> Implementation Plan
+Requirement Intake（一句话 / Issue / Story 文档）
+    --多轮澄清后足够清晰--> Plan Map（多切片时）+ 第一个 Implementation Plan
     --用户批准--> TDD Task Breakdown
     --Task 已评审批准 + 用户要求执行 + Git clean--> Task Implementation
     --交付与观察--> Production Learning
 ```
 
-最初的“帮我实现这个需求”会启动需求分析。需求模糊时，Agent 只提出澄清问题并等待回答；达到 Requirement Ready 后，Agent 自动创建一个小型 Implementation Plan，然后停止。用户随后明确回复“OK”“可以”“按这个 Plan”或同等含义时，即授权 Nick 为刚刚确认的 Plan 创建 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
+最初的一句话、Issue 或 Story 文档都会启动需求分析，而不是直接触发实现。需求模糊时，Agent 每轮只提出一组高价值问题并等待回答；达到 Requirement Ready 后，多切片 Story 会生成轻量 Plan Map 和第一个详细 Implementation Plan，单切片需求只生成详细 Plan，然后停止。Plan Map 是可以被反馈重排的切片预测，不代表后续 Plan 已经设计或批准。用户明确认可当前详细 Plan 后，Nick 才创建它的 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
 
 如果 Git 工作区存在 staged、unstaged 或 untracked 文件，Nick 只报告状态并停止，不会自动 commit、stash、reset、删除或隐藏已有改动来绕过门禁。Plan 和 Task 文件若保存在目标仓库中，也需要先由用户决定如何纳入干净基线。
 
@@ -145,7 +145,7 @@ git -C "$HOME/.agents/skills/nick-engineering" pull
 
 以下示例使用 `$nick-engineering` 表示目标 Agent 的具名 Skill 调用语法；如果平台使用其他语法，请替换为对应形式。
 
-### 1. 让 Nick 创建 Implementation Plan
+### 1. 让 Nick 从需求创建 Plan Map 和 Implementation Plan
 
 可以直接描述需求：
 
@@ -155,17 +155,21 @@ git -C "$HOME/.agents/skills/nick-engineering" pull
 <需求描述>
 
 如果需求不清晰，先从资深开发者角度提出澄清问题并等待我的回答。
-需求足够清晰后，只创建一个覆盖下一垂直切片的 Implementation Plan，然后停止。
+通过多轮澄清达到 Requirement Ready 后：
+- 如果需求包含多个垂直切片，先创建轻量 Plan Map，再只详细创建第一个 Implementation Plan。
+- 如果需求只有一个切片，直接创建该 Implementation Plan。
+然后停止，不要拆 Task 或修改代码。
 ```
 
 也可以提供已有需求文档：
 
 ```text
-使用 $nick-engineering 分析 requirements/<feature>.md。
-需求足够清晰后创建 Implementation Plan；只输出 Plan，不要拆 Task 或修改代码。
+使用 $nick-engineering 完整读取并分析 requirements/<story>.md。
+不要假设 Story 文档已经足够清晰；结合现有代码和测试，多轮询问仍会影响行为、边界或交付的关键问题。
+达到 Requirement Ready 后，为整个 Story 创建轻量 Plan Map，并只详细创建排在第一位的 Implementation Plan，然后停止。
 ```
 
-Nick 会先检查现有代码和测试。需求仍有关键歧义时，它只提出问题；达到 Requirement Ready 后，它创建 Plan 并停止，等待 Review。
+Nick 会先检查需求、现有代码和测试。需求仍有关键歧义时，它每轮只询问一组高价值问题并等待回答。达到 Requirement Ready 后，较大的 Story 会得到一个有序 Plan Map，但只有标记为 `Next` 的切片会被详细设计；后续 Plan 保持轻量，等待交付和生产反馈后再调整。
 
 ### 2. 让 Nick 根据 Plan 创建 Task
 

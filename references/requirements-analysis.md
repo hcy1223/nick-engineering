@@ -1,8 +1,16 @@
 # Requirement Understanding
 
-Use this workflow as the default entry point when the user describes a feature, change, problem, or desired behavior without providing a previously reviewed requirement artifact.
+Use this workflow as the default entry point for every new requirement, whether the user provides one sentence, an issue, or an apparently complete Story or requirements document. Treat an existing artifact as requirement evidence, not as proof that the requirement is ready for planning.
 
 While the requirement is vague, this is an analysis-only stage. Inspect requirements, relevant code, tests, documentation, and production evidence, but do not create an Implementation Plan, generate tasks, or edit production code.
+
+## Resolve the Requirement Input
+
+- If the input names a file, read the complete file and the directly referenced material needed to understand it.
+- Otherwise treat the user's message as the initial requirement description.
+- Preserve the source language, domain terms, identifiers, and links.
+- Compare the written Story with current repository behavior; do not assume either is complete or current.
+- Do not treat labels such as “Ready,” “Refined,” or “Approved” as a substitute for the Requirement Ready Gate.
 
 ## Build a Shared Understanding
 
@@ -33,11 +41,11 @@ Classify findings as:
 - **Assumed**: A provisional interpretation that is safe to expose for confirmation.
 - **Unknown**: Missing information that could change behavior, scope, domain rules, contracts, data, security, delivery, or success criteria.
 
-Ask focused questions for material unknowns from a senior developer's perspective. Challenge unclear outcomes and requested mechanisms, but do not ask the user for facts that can be discovered safely from the repository. Ask the smallest useful group of high-impact questions, explain why each decision matters, and wait for the answers before reassessing readiness.
+Ask focused questions for material unknowns from a senior developer's perspective. Challenge unclear outcomes and requested mechanisms, but do not ask the user for facts that can be discovered safely from the repository. Ask the smallest useful group of high-impact questions, explain why each decision matters, and wait for the answers before reassessing readiness. Expect multiple rounds when later answers expose new domain rules or boundary decisions; do not compress every possible question into one overwhelming questionnaire.
 
-## Propose Agile Slices
+## Discover Agile Slices
 
-When the requirement is broader than one independently verifiable behavior, propose candidate vertical slices ordered by value, risk, learning, and real dependency. Do not design the slices in detail and do not turn them into tasks yet.
+When the requirement is broader than one independently verifiable behavior, discover candidate vertical slices ordered by value, risk, learning, and real dependency. Use them to test whether the Story is understood and whether the first slice can be selected. Do not design the slices in detail and do not turn them into tasks yet.
 
 ## Requirement Ready Gate
 
@@ -59,4 +67,4 @@ If the requirement is not ready:
 - Stop and wait for the user's answers.
 - Repeat this loop until the Requirement Ready Gate is satisfied.
 
-When the requirement is ready, proceed directly to `references/implementation-planning.md`. Do not emit a separate Requirement Understanding artifact unless the user asks for one. Create only one Implementation Plan for the recommended next vertical slice, then stop. Do not generate tasks or edit production code.
+When the requirement is ready, proceed directly to `references/implementation-planning.md`. Do not emit a separate Requirement Understanding artifact unless the user asks for one. For a broad Story, create a lightweight Plan Map and one detailed Implementation Plan for the recommended next slice. For a single-slice request, create only the detailed plan. Then stop; do not generate tasks or edit production code.

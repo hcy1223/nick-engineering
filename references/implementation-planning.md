@@ -1,6 +1,6 @@
 # Implementation Planning
 
-Use this workflow when asked to create a technical implementation plan from a requirement document, issue, or feature description. Produce a review-ready plan grounded in the current repository, not a generic architecture proposal.
+Use this workflow after Requirement Ready for a one-line request, issue, Story document, or other requirement source. Produce an ordered lightweight Plan Map when the requirement spans multiple slices, plus one review-ready detailed plan for the next slice.
 
 ## Require Requirement Ready
 
@@ -17,9 +17,10 @@ If the gate is not satisfied, ask focused clarification questions and stop befor
 
 1. If the input is a file path, read it as the source requirement. Otherwise treat the input as the feature description.
 2. Write the plan in the same language as the source. Preserve technical terms, identifiers, API names, and established domain language.
-3. After choosing the plan boundary, derive a lowercase hyphenated slug from the selected slice title.
-4. Write to `docs/YYYY-MM-DD-implementation-plan-<slug>.md`.
-5. If `docs/` does not exist, ask the user which output directory to use before writing.
+3. Derive a lowercase hyphenated Story slug from the broad requirement and a slice slug from the selected next slice.
+4. When multiple slices are required, write the lightweight map to `docs/YYYY-MM-DD-plan-map-<story-slug>.md`.
+5. Write the detailed current plan to `docs/YYYY-MM-DD-implementation-plan-<slice-slug>.md`.
+6. If `docs/` does not exist, ask the user which output directory to use before writing either artifact.
 
 ## Choose a Small Plan Boundary
 
@@ -27,11 +28,12 @@ Treat an Implementation Plan as the design for one independently verifiable vert
 
 1. Identify the smallest slice that delivers observable behavior, retires a material risk, or creates valuable learning.
 2. Keep the slice end to end. Do not create separate plans for controllers, services, repositories, database work, or other technical layers.
-3. If the input is broader than one slice, list candidate plans ordered by value, risk, and real dependency.
-4. Create only the next plan unless the user explicitly requests multiple plans. Record later slices as candidate follow-up plans without detailed design or tasks.
-5. Derive the output slug from the selected slice rather than the entire parent User Story.
+3. If the input is broader than one slice, create a complete lightweight Plan Map ordered by value, risk, learning, and real dependency. For every candidate plan, record only its observable outcome, reason for ordering, dependencies, success evidence, and status.
+4. Mark exactly one candidate as `Next`. Keep the others `Later`; do not add detailed architecture, code changes, or tasks for them.
+5. Create a detailed Implementation Plan only for the `Next` slice. Do not create several detailed plans in one planning pass; let feedback reshape later slices first.
+6. Derive the detailed-plan slug from the selected slice rather than the entire parent Story.
 
-Keep the plan just detailed enough to review the next change safely. Stabilize decisions that affect the current slice and make deferred decisions explicit; do not design the whole story in advance.
+Keep the Plan Map lightweight and the current plan detailed enough to review the next change safely. Stabilize decisions that affect the current slice and make deferred decisions explicit; do not design the whole Story in advance.
 
 ## Understand Before Designing
 
@@ -65,9 +67,9 @@ Ask for clarification when an unresolved requirement or design decision would ma
 
 Address migration order, backward compatibility, rollout controls, rollback, ownership, telemetry, failure containment, and recovery in proportion to risk. Define how production evidence will become a decision, task, test, model change, or explicit non-action.
 
-## Create the Document
+## Create the Artifacts
 
-Copy and adapt `assets/implementation-plan-template.md`. Remove irrelevant optional sections rather than filling them with “N/A.” Keep the document detailed enough to create executable tasks without pretending unresolved decisions are settled.
+For a multi-slice Story, copy `assets/feature-plan-template.md` for the Plan Map. Always copy `assets/implementation-plan-template.md` for the current detailed plan. Remove irrelevant optional sections rather than filling them with “N/A.” Keep the detailed plan sufficient for executable tasks without pretending later-slice decisions are settled.
 
 Before finishing, verify that:
 
@@ -75,11 +77,12 @@ Before finishing, verify that:
 - Proposed changes match repository architecture, naming, and dependency conventions.
 - Reuse and pattern decisions explain semantics and design forces.
 - The plan covers one small vertical slice and leaves later slices as lightweight candidates.
+- A multi-slice Story has one ordered Plan Map with exactly one `Next` slice and no premature detailed designs for later slices.
 - Expected task boundaries are reviewable and testable rather than component inventories.
 - Compatibility, migration, rollback, and observability are proportional to risk.
 
 After writing:
 
-1. Print the absolute output path.
-2. State that the Implementation Plan is ready for review.
-3. Stop. Do not generate a task list, edit code, or begin implementation.
+1. Print the absolute Plan Map path when one was created, followed by the detailed Implementation Plan path.
+2. State that the detailed Implementation Plan is ready for review and that later slices remain intentionally lightweight.
+3. Stop. Do not generate a task list, detail another plan, edit code, or begin implementation.

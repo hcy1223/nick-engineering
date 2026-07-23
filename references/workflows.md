@@ -2,9 +2,9 @@
 
 ## Requirement Understanding
 
-Treat a raw feature description, change request, or “implement this” prompt as authorization to analyze the requirement and create one Implementation Plan when it becomes ready. Read `references/requirements-analysis.md` and inspect the relevant repository behavior. If material ambiguity remains, ask focused questions and stop. Do not create a plan while the requirement is vague.
+Treat a one-line request, issue, Story document, change request, or “implement this” prompt as authorization to analyze the requirement. Read `references/requirements-analysis.md` and inspect the relevant repository behavior. An existing Story is input, not automatic approval. If material ambiguity remains, ask focused questions and stop; repeat across multiple rounds as needed.
 
-When the requirement is sufficiently clear to select the next vertical slice without guessing, proceed to Implementation Planning. Output only that plan and stop; do not create tasks or code.
+When the requirement is sufficiently clear to select the next vertical slice without guessing, proceed to Implementation Planning. For a broad Story, output a lightweight Plan Map and only the first detailed Implementation Plan. For a single-slice request, output only that detailed plan. Then stop; do not create tasks or code.
 
 ## Feature Planning
 
@@ -18,7 +18,7 @@ Start with the decision, not the requested mechanism.
 6. Slice vertically so each increment exercises a meaningful behavior end to end.
 7. Decide how production evidence will confirm or challenge the plan.
 
-Reject feature plans that are only component inventories or implementation checklists. Use `assets/feature-plan-template.md` when a persistent artifact is useful.
+Reject feature plans that are only component inventories or implementation checklists. For a multi-slice Story, use `assets/feature-plan-template.md` as the Plan Map: order vertical slices, mark one as `Next`, and leave later slices lightweight.
 
 ## Task Creation
 
@@ -41,7 +41,7 @@ After producing the task list, stop. Task review and approval, an explicit reque
 
 ## Implementation Planning
 
-Create an implementation plan only after the Requirement Ready Gate is satisfied, when the next vertical slice needs an explicit technical path. Keep each plan small and independently verifiable. One User Story may produce several plans; detail only the next worthwhile slice and let feedback shape later plans. Read `references/implementation-planning.md` for the generation workflow, then copy `assets/implementation-plan-template.md` as the output skeleton.
+Create planning artifacts only after the Requirement Ready Gate is satisfied. A broad User Story produces one lightweight Plan Map and may produce several Implementation Plans over time, but detail only the next worthwhile slice now. Let feedback shape later plans. Read `references/implementation-planning.md` for the generation workflow, use `assets/feature-plan-template.md` for the map when needed, and use `assets/implementation-plan-template.md` for the current slice.
 
 Feature Plans and User Stories describe broader value and intent. Each Implementation Plan describes how one accepted vertical slice will be changed and verified; its Implementation Tasks describe the immediate Red–Green–Refactor work. Keep artifacts separate when that improves review, and combine lightweight artifacts for very small, low-risk changes.
 

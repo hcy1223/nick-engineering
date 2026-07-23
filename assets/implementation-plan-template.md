@@ -2,6 +2,7 @@
 
 - **Date**: <YYYY-MM-DD>
 - **Parent User Story**: <story, feature, issue, or requirement link>
+- **Plan Map**: <plan map path or "Not required — single-slice requirement">
 - **Source**: <requirement path or feature description>
 - **Status**: Draft | Ready | In Progress | Learned | Done
 
