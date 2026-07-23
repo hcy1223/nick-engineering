@@ -21,6 +21,15 @@
 - 让产品决策、领域模型、代码、交付、生产运行和反馈学习形成闭环。
 - 使用现代 Java 表达不可变性、封闭类型域、穷举决策和数据导向设计。
 
+## 能做什么
+
+在实现具体需求时，这个 Skill 会引导 Codex：
+
+1. 同时采用自上而下和自下而上的工作分解。自上而下从目标、验收行为和垂直切片展开；自下而上理解现有代码、测试、约束和可复用能力，并让两种视角在具体改动点会合。
+2. 优先复用现有代码中语义一致的领域知识与行为，判断何时直接复用、组合、适配或暂时不抽象；只有存在明确设计压力和变化轴时才采用设计模式。
+3. 在需求实现后重新阅读完整变更，识别命名、职责、重复知识、条件复杂度、耦合、过度 Mock 和推测性通用化等 code smell，并保留有证据支持的扩展点。
+4. 常常使用 TDD 驱动实现，通过小步 Red–Green–Refactor 让测试参与接口、职责和边界设计。
+
 ## 目录
 
 ```text
@@ -34,6 +43,7 @@ nick-engineering/
 │   └── production-learning-template.md
 └── references/
     ├── delivery-and-operations.md
+    ├── implementation-thinking.md
     ├── java-style.md
     ├── modeling-and-dsl.md
     ├── testing.md
