@@ -55,10 +55,9 @@ nick-engineering/
 ├── agents/
 │   └── openai.yaml
 ├── assets/
-│   ├── engineering-task-template.md
-│   ├── feature-plan-template.md
 │   ├── implementation-plan-template.md
 │   ├── implementation-task-template.md
+│   ├── plan-map-template.md
 │   └── production-learning-template.md
 └── references/
     ├── delivery-and-operations.md
@@ -69,13 +68,13 @@ nick-engineering/
     ├── java-style.md
     ├── modeling-and-dsl.md
     ├── requirements-analysis.md
-    ├── testing.md
-    └── workflows.md
+    ├── task-implementation.md
+    └── testing.md
 ```
 
 - `SKILL.md` 保存核心原则、工作循环和渐进加载路由。
 - `references/` 保存按任务加载的详细方法。
-- `assets/` 保存 Feature Plan、工程任务、Implementation Plan、Implementation Task 和生产学习模板。
+- `assets/` 保存 Plan Map、Implementation Plan、Implementation Task 和生产学习模板。
 - `agents/openai.yaml` 是 OpenAI/Codex 的可选界面适配，不属于核心方法。
 
 ## 可移植性

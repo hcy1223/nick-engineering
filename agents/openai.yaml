@@ -1,4 +1,4 @@
 interface:
   display_name: "Nick Engineering"
   short_description: "Clarify, plan, task, then implement safely"
-  default_prompt: "Use $nick-engineering to ingest my one-line request or Story document and clarify it through as many focused rounds as needed. When ready, create a lightweight Plan Map for a multi-slice Story and only the first detailed Implementation Plan, then stop. Create tasks only after plan approval, and implement only an approved task with a clean Git worktree."
+  default_prompt: "Use $nick-engineering to clarify the request, create a Plan Map when needed and only one detailed Plan, then stop. After explicit approvals, create Tasks, then implement one Task through TDD only from a clean Git worktree."

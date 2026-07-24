@@ -4,14 +4,6 @@
 - **Generated**: <YYYY-MM-DD>
 - **Status**: Ready
 
-## Task Principles
-
-- Start every implementation task with a failing test or an explicit verification that fails before the change.
-- Keep each task focused and ideally smaller than one day.
-- Make tasks within the same milestone independently executable where possible.
-- Prefer observable behavior and real collaborators; substitute only true system boundaries.
-- Include only the current Implementation Plan; do not pull candidate follow-up plans into this task list.
-
 ## Milestone 1: <Outcome-oriented milestone>
 
 - **Outcome**: <Observable capability delivered by this milestone>
