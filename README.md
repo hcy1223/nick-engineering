@@ -54,6 +54,12 @@ nick-engineering/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
+├── package.json
+├── scripts/
+│   ├── validate-skill.ts
+│   ├── check-baseline.ts
+│   └── tests/
+│       └── scripts.test.ts
 ├── assets/
 │   ├── implementation-plan-template.md
 │   ├── implementation-task-template.md
@@ -256,6 +262,27 @@ Load only the references routed by SKILL.md for the current workflow stage.
 这样可以保持核心方法稳定，同时避免无关细节占用上下文。
 
 ## 开发与验证
+
+### TypeScript 脚本
+
+脚本使用 Node.js 22.18+ 直接执行 TypeScript，无需安装依赖或编译。Node 只移除类型，不进行类型检查。两个脚本均只读取并报告，不修改文件或 Git 状态。
+
+```bash
+# 校验本 Skill（默认从脚本位置定位 Skill，不依赖当前工作目录）
+node /path/to/nick-engineering/scripts/validate-skill.ts
+
+# 校验指定 Skill
+node /path/to/nick-engineering/scripts/validate-skill.ts /path/to/skill
+
+# 检查目标仓库的干净基线（省略路径时使用当前工作目录）
+node /path/to/nick-engineering/scripts/check-baseline.ts /path/to/repository
+```
+
+`validate-skill.ts` 检查 `SKILL.md` 中必需的 name、description，以及入口、README、references 和 assets 中 Markdown 的本地链接与锚点。支持行内链接、引用链接定义、ATX 标题及 HTML id/name；忽略代码块中的示例和远程链接，不发起网络请求。元数据支持普通文本、引号文本和缩进多行文本，校验器不是完整的 YAML 或 Markdown 解析器。它不验证模板内容、设计质量、阶段就绪状态或用户授权。
+
+`check-baseline.ts` 检查整个 Git 工作区，即使传入子目录也包括目录外的变更；明确包含 untracked 文件和子模块变更。它不执行 stash、commit、reset，也不修改 Git 配置。
+
+两个脚本的退出码都是：`0` 检查通过，`1` 发现结构问题或工作区不干净，`2` 参数或运行错误。使用 `--help` 查看参数。在本仓库根目录也可以运行 `npm run validate`、`npm run check:baseline` 和 `npm test`。测试使用临时目录和临时 Git 仓库。
 
 保持 `SKILL.md` 精简，把详细规则放入对应 reference，不要在多个文件中重复同一原则。验证时应分别检查：
 

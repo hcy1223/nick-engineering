@@ -6,8 +6,8 @@ This is the standard workflow execution entry. Use it only after the user approv
 
 Before editing source, tests, configuration, schema, migrations, or generated implementation files for each Task:
 
-1. Run `git status --porcelain` in the target repository.
-2. Continue only when it produces no output.
+1. With Node.js 22.18+, run `node <skill-directory>/scripts/check-baseline.ts <target-repository>`. It checks the entire worktree, including staged, unstaged, untracked, and submodule changes, without modifying it. If Node is unavailable, run `git status --porcelain=v1 --untracked-files=all --ignore-submodules=none` in the target repository instead.
+2. Continue only when the script exits with `0` (clean), or the fallback Git command succeeds and produces no output. Script exit `1` means dirty; `2` means an operational or usage error. Both block implementation.
 3. If it reports staged, unstaged, or untracked files, show the status and stop.
 4. If the target is not a Git repository, stop and ask how to establish a safe baseline.
 

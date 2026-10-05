@@ -38,6 +38,8 @@ Plan Map, Implementation Plan, and TDD Task are artifacts. Coder and cleaner are
 
 Both workflows require a clean Git baseline before their first implementation edit; follow [the baseline check](references/task-implementation.md#enforce-a-clean-baseline). Do not repeat that check between coder and cleaner against changes made by the current run.
 
+With Node.js 22.18+ available, use the bundled [check-baseline.ts](scripts/check-baseline.ts) as described in that reference. For maintenance of this skill itself, run [validate-skill.ts](scripts/validate-skill.ts) to check metadata and local resource links; structural validity does not establish workflow readiness or user approval.
+
 Run [coder](references/stages/coder.md) then [cleaner](references/stages/cleaner.md) continuously within the authorized scope. Preserve existing delivery authorization boundaries; completing the workflow does not authorize commit, push, or deployment.
 
 ## Load Only What the Current Stage Needs
