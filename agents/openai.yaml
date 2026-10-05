@@ -1,4 +1,4 @@
 interface:
   display_name: "Nick Engineering"
-  short_description: "Clarify, plan, task, then implement safely"
-  default_prompt: "Use $nick-engineering to clarify the request, create a Plan Map when needed and only one detailed Plan, then stop. After explicit approvals, create Tasks, then implement one Task through TDD only from a clean Git worktree."
+  short_description: "Staged engineering and two-pack local changes"
+  default_prompt: "Use $nick-engineering for staged planning and approved task execution, or explicitly request /two-pack for a local code change through coder and cleaner without Plan or Task documents."

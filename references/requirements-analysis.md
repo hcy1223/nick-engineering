@@ -1,6 +1,6 @@
 # Requirement Understanding
 
-Use this workflow as the default entry point for every new requirement, whether the user provides one sentence, an issue, or an apparently complete Story or requirements document. Treat an existing artifact as requirement evidence, not as proof that the requirement is ready for planning.
+Use this as the requirement entry for the standard workflow, whether the user provides one sentence, an issue, or an apparently complete Story or requirements document. Explicit two-pack requests use [their own admission rules](two-pack.md). Treat an existing artifact as requirement evidence, not as proof that the requirement is ready for planning.
 
 While the requirement is vague, this is an analysis-only stage. Inspect requirements, relevant code, tests, documentation, and production evidence, but do not create an Implementation Plan, generate tasks, or edit production code.
 

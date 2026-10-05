@@ -1,6 +1,6 @@
 # Task Implementation
 
-Use this workflow only after the user approves a concrete Task and explicitly asks to execute it. A requirement, approved Plan, or unapproved task list is not implementation authorization.
+This is the standard workflow execution entry. Use it only after the user approves a concrete Task and explicitly asks to execute it. A requirement, approved Plan, or unapproved task list is not implementation authorization.
 
 ## Enforce a Clean Baseline
 
@@ -15,16 +15,12 @@ Do not commit, stash, reset, discard, delete, or hide changes to manufacture a c
 
 ## Execute the Approved Task
 
-1. Reconstruct intent from the Task, approved Plan, current code, behavioral tests, and relevant production evidence.
-2. Resolve ambiguity that could change the approved outcome; expose only small, reversible assumptions.
-3. Follow `references/testing.md`: write the smallest meaningful failing test, make it pass, then refactor.
-4. Reuse existing behavior when semantics match. Apply a pattern only for a demonstrated force.
-5. Keep the change inside the approved Task. Stop if evidence invalidates the Plan or Task boundary.
-6. Run focused checks first, then the broader relevant suite.
-7. Review the complete diff for code smells, accidental scope, compatibility, security, and operability.
-8. Record verification, remaining risk, and the production signal that will confirm or challenge the change.
+1. Pass the clean-baseline check above once before the first edit.
+2. Load [coder](stages/coder.md) with the approved Task, its Plan, and repository evidence. Complete the implementation and verification within that Task.
+3. Pass the concise in-context handoff to [cleaner](stages/cleaner.md). Continue without another approval or clean-baseline check for this run's own changes.
+4. Mark only the current Task done after cleaner passes. A blocked stage is not completion; do not begin another Task automatically.
 
-Load `references/implementation-thinking.md`, `references/java-style.md`, or `references/delivery-and-operations.md` only when the Task needs that guidance.
+The shared stages do not remove standard Plan and Task approval gates. Two-pack has its own admission rules in [two-pack.md](two-pack.md).
 
 ## Finish Without Assuming Delivery Authority
 

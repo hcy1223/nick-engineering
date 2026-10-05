@@ -33,7 +33,7 @@
 5. 常常使用 TDD 驱动实现，通过小步 Red–Green–Refactor 让测试参与接口、职责和边界设计。
 6. 采用滚动式敏捷规划：一个 Implementation Plan 只覆盖一个可独立验证的垂直切片，一个 User Story 可以逐步产生多个 Plan；用户认可当前 Plan 后，Nick 运用架构、领域、TDD、兼容性、交付和生产运行经验拆分可执行 Task，而不是机械复制 Plan 章节。
 
-## 阶段门
+## 标准流程阶段门
 
 ```text
 Requirement Intake（一句话 / Issue / Story 文档）
@@ -43,7 +43,7 @@ Requirement Intake（一句话 / Issue / Story 文档）
     --交付与观察--> Production Learning
 ```
 
-最初的一句话、Issue 或 Story 文档都会启动需求分析，而不是直接触发实现。需求模糊时，Agent 每轮只提出一组高价值问题并等待回答；达到 Requirement Ready 后，多切片 Story 会生成轻量 Plan Map 和第一个详细 Implementation Plan，单切片需求只生成详细 Plan，然后停止。Plan Map 是可以被反馈重排的切片预测，不代表后续 Plan 已经设计或批准。用户明确认可当前详细 Plan 后，Nick 才创建它的 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
+默认标准流程中，最初的一句话、Issue 或 Story 文档都会启动需求分析，而不是直接触发实现。需求模糊时，Agent 每轮只提出一组高价值问题并等待回答；达到 Requirement Ready 后，多切片 Story 会生成轻量 Plan Map 和第一个详细 Implementation Plan，单切片需求只生成详细 Plan，然后停止。Plan Map 是可以被反馈重排的切片预测，不代表后续 Plan 已经设计或批准。用户明确认可当前详细 Plan 后，Nick 才创建它的 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
 
 如果 Git 工作区存在 staged、unstaged 或 untracked 文件，Nick 只报告状态并停止，不会自动 commit、stash、reset、删除或隐藏已有改动来绕过门禁。Plan 和 Task 文件若保存在目标仓库中，也需要先由用户决定如何纳入干净基线。
 
@@ -69,7 +69,11 @@ nick-engineering/
     ├── modeling-and-dsl.md
     ├── requirements-analysis.md
     ├── task-implementation.md
-    └── testing.md
+    ├── testing.md
+    ├── two-pack.md
+    └── stages/
+        ├── coder.md
+        └── cleaner.md
 ```
 
 - `SKILL.md` 保存核心原则、工作循环和渐进加载路由。
@@ -140,9 +144,37 @@ git -C "$HOME/.agents/skills/nick-engineering" pull
 
 ## 使用
 
-把 Plan、Task 和 Implementation 作为三个独立步骤使用。Nick 会在每个阶段结束后停止，等待用户 Review 和明确授权，不会从模糊需求直接跳到写代码。
+标准流程把 Plan、Task 和 Implementation 作为三个独立步骤使用。Nick 会在每个阶段结束后停止，等待用户 Review 和明确授权，不会从模糊需求直接跳到写代码。
 
 以下示例使用 `$nick-engineering` 表示目标 Agent 的具名 Skill 调用语法；如果平台使用其他语法，请替换为对应形式。
+
+### 轻量修改：two-pack
+
+显式选择 two-pack，可以省略 Implementation Plan、TDD Task 文档和中间审批：
+
+```text
+使用 $nick-engineering：
+/two-pack 修复价格计算函数在数量为 0 时的返回值，并补充对应行为测试。
+```
+
+也可以自然语言调用：“使用 nick-engineering 的 two-pack 工作流，将这个函数中的局部变量改为更清晰的名称。”
+
+```text
+newtask → coder → cleaner → done
+```
+
+- `newtask`、`done` 是任务状态；`coder`、`cleaner` 是执行阶段，不要求使用两个 Agent。
+- coder 理解相关代码、完成修改和必要验证；行为变化遵循 TDD，纯重命名使用适当的现有测试、编译和引用检查。
+- cleaner 审视完整改动，按需修复或局部重构并重新验证；无需重构也是有效结果。
+- 两阶段连续执行，仅在关键歧义、验证阻塞或超出范围时暂停。交接保留在上下文中，不创建额外文档。
+
+适用于局部函数修改、小缺陷修复、局部变量或私有方法重命名，以及保持外部契约的局部模块调整。**不包含数据库 schema、约束或数据迁移变更。** 发现需要这些变更或更大范围设计时，说明原因并等待用户决定是否转入标准流程，不自动扩展工作。
+
+首次修改前仍要求 Git 工作区 clean；coder 和 cleaner 之间不因本次产生的改动重新触发该门禁。调用即授权本次两阶段执行，但不授权 commit、push 或部署。必要验证未通过或无法完成时，报告阻塞，不标记 done。
+
+`/two-pack` 是 Skill 加载后识别的工作流调用约定，本仓库不自动向宿主注册原生斜杠命令。平台可以提供适配，不支持时使用上述自然语言调用。
+
+标准流程仍保留 Plan、Task 审批，获准执行的具体 Task 同样复用 coder → cleaner。Plan 和 Task 是上游产物，不是 two-pack 的必需输入。阶段职责分别定义在 [coder](references/stages/coder.md) 和 [cleaner](references/stages/cleaner.md)，流转规则定义在 [two-pack](references/two-pack.md)。
 
 ### 1. 让 Nick 从需求创建 Plan Map 和 Implementation Plan
 
