@@ -26,24 +26,24 @@
 
 在实现具体需求时，这个 Skill 会引导 AI Agent：
 
-1. 接受一句话、Issue 或已有 Story 文档作为需求入口，以资深开发者视角检查现有系统并进行多轮澄清；需求足够清晰后，为多切片 Story 创建轻量 Plan Map，并只详细设计第一个 Implementation Plan。
-2. 同时采用自上而下和自下而上的工作分解。自上而下从目标、验收行为和垂直切片展开；自下而上理解现有代码、测试、约束和可复用能力，并让两种视角在具体改动点会合。
+1. 接受一句话、Issue 或已有 Story 文档作为需求入口，以资深开发者视角检查现有系统并进行多轮澄清；需求足够清晰后，为需要分次完成的 Story 创建轻量 Plan Map，并只详细设计第一个 Implementation Plan。
+2. 同时采用自上而下和自下而上的工作分解。自上而下从目标、验收行为和每次要完成的内容展开；自下而上理解现有代码、测试、约束和可复用能力，并让两种视角在具体改动点会合。
 3. 优先复用现有代码中语义一致的领域知识与行为，判断何时直接复用、组合、适配或暂时不抽象；只有存在明确设计压力和变化轴时才采用设计模式。
 4. 在需求实现后重新阅读完整变更，识别命名、职责、重复知识、条件复杂度、耦合、过度 Mock 和推测性通用化等 code smell，并保留有证据支持的扩展点。
 5. 常常使用 TDD 驱动实现，通过小步 Red–Green–Refactor 让测试参与接口、职责和边界设计。
-6. 采用滚动式敏捷规划：一个 Implementation Plan 只覆盖一个可独立验证的垂直切片，一个 User Story 可以逐步产生多个 Plan；用户认可当前 Plan 后，Nick 运用架构、领域、TDD、兼容性、交付和生产运行经验拆分可执行 Task，而不是机械复制 Plan 章节。
+6. 采用滚动式敏捷规划：一个 Implementation Plan 只覆盖本次要完成的内容，并明确怎样确认已经完成。一个 User Story 可以逐步产生多个 Plan；用户认可当前 Plan 后，Nick 运用架构、领域、TDD、兼容性、交付和生产运行经验拆分可执行 Task，而不是机械复制 Plan 章节。
 
 ## 标准流程阶段门
 
 ```text
 Requirement Intake（一句话 / Issue / Story 文档）
-    --多轮澄清后足够清晰--> Plan Map（多切片时）+ 第一个 Implementation Plan
+    --多轮澄清后足够清晰--> Plan Map（需要分次完成时）+ 第一个 Implementation Plan
     --用户批准--> TDD Task Breakdown
     --Task 已评审批准 + 用户要求执行 + Git clean--> Task Implementation
     --交付与观察--> Production Learning
 ```
 
-默认标准流程中，最初的一句话、Issue 或 Story 文档都会启动需求分析，而不是直接触发实现。需求模糊时，Agent 每轮只提出一组高价值问题并等待回答；达到 Requirement Ready 后，多切片 Story 会生成轻量 Plan Map 和第一个详细 Implementation Plan，单切片需求只生成详细 Plan，然后停止。Plan Map 是可以被反馈重排的切片预测，不代表后续 Plan 已经设计或批准。用户明确认可当前详细 Plan 后，Nick 才创建它的 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
+默认标准流程中，最初的一句话、Issue 或 Story 文档都会启动需求分析，而不是直接触发实现。需求模糊时，Agent 每轮只提出一组高价值问题并等待回答；达到 Requirement Ready 后，需要分次完成的 Story 会生成轻量 Plan Map 和第一个详细 Implementation Plan，一次就能完成的需求只生成详细 Plan，然后停止。Plan Map 是对后续要做什么及其顺序的初步安排，可以根据反馈调整，不代表后续 Plan 已经设计或批准。用户明确认可当前详细 Plan 后，Nick 才创建它的 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
 
 如果 Git 工作区存在 staged、unstaged 或 untracked 文件，Nick 只报告状态并停止，不会自动 commit、stash、reset、删除或隐藏已有改动来绕过门禁。Plan 和 Task 文件若保存在目标仓库中，也需要先由用户决定如何纳入干净基线。
 
@@ -193,8 +193,8 @@ newtask → coder → cleaner → done
 
 如果需求不清晰，先从资深开发者角度提出澄清问题并等待我的回答。
 通过多轮澄清达到 Requirement Ready 后：
-- 如果需求包含多个垂直切片，先创建轻量 Plan Map，再只详细创建第一个 Implementation Plan。
-- 如果需求只有一个切片，直接创建该 Implementation Plan。
+- 如果需求需要分成几次完成，先创建轻量 Plan Map，再只详细创建第一个 Implementation Plan。
+- 如果需求一次就能完成，直接创建该 Implementation Plan。
 然后停止，不要拆 Task 或修改代码。
 ```
 
@@ -206,7 +206,7 @@ newtask → coder → cleaner → done
 达到 Requirement Ready 后，为整个 Story 创建轻量 Plan Map，并只详细创建排在第一位的 Implementation Plan，然后停止。
 ```
 
-Nick 会先检查需求、现有代码和测试。需求仍有关键歧义时，它每轮只询问一组高价值问题并等待回答。达到 Requirement Ready 后，较大的 Story 会得到一个有序 Plan Map，但只有标记为 `Next` 的切片会被详细设计；后续 Plan 保持轻量，等待交付和生产反馈后再调整。
+Nick 会先检查需求、现有代码和测试。需求仍有关键歧义时，它每轮只询问一组高价值问题并等待回答。达到 Requirement Ready 后，较大的 Story 会得到一个有序 Plan Map，但只详细设计标记为 `Next` 的本次要完成的内容；后续 Plan 保持轻量，等待交付和生产反馈后再调整。
 
 ### 2. 让 Nick 根据 Plan 创建 Task
 
@@ -217,7 +217,7 @@ Review Plan 后，明确表示批准并提供路径：
 docs/<implementation-plan>.md
 
 使用 $nick-engineering 根据该 Plan 拆分可执行的 TDD Task。
-运用你的工程经验确定行为切片、依赖和顺序，只输出 Task 列表，然后停止。
+运用你的工程经验确定每个 Task 要完成的行为、依赖和顺序，只输出 Task 列表，然后停止。
 ```
 
 如果 Plan 是 Nick 在当前对话中刚刚创建的，也可以直接回复：

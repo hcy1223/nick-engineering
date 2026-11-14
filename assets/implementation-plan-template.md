@@ -1,14 +1,14 @@
-# Implementation Plan: <small vertical slice>
+# Implementation Plan: <what to complete this time>
 
 - **Date**: <YYYY-MM-DD>
 - **Parent User Story**: <story, feature, issue, or requirement link>
-- **Plan Map**: <plan map path or "Not required — single-slice requirement">
+- **Plan Map**: <plan map path or "Not required — only one plan needed">
 - **Source**: <requirement path or feature description>
 - **Status**: Draft | Ready | In Progress | Learned | Done
 
 ## 1. Outcome & Plan Boundary
 
-### Slice Outcome
+### What to Complete This Time
 
 <One observable behavior or risk-reducing capability delivered by this plan.>
 
@@ -19,7 +19,7 @@
 
 ### In Scope
 
-- <Capability required for this slice.>
+- <Capability required for this plan.>
 
 ### Out of Scope
 
@@ -27,18 +27,18 @@
 
 ### Candidate Follow-up Plans
 
-- <Next vertical slice; do not decompose it into tasks yet.>
+- <What to complete next; do not decompose it into tasks yet.>
 
 ### Assumptions & Constraints
 
-- <Assumption that permits this slice to proceed.>
+- <Assumption that permits this plan to proceed.>
 - <Compatibility, security, performance, data, or operational constraint.>
 
 ## 2. Current System
 
 ### Current Flow
 
-<Trace only the behavior relevant to this slice from entry point to downstream effect.>
+<Trace only the behavior relevant to this plan from entry point to downstream effect.>
 
 ### Reuse & Change Points
 
@@ -53,7 +53,7 @@
 
 ## 3. Design Decisions
 
-- **Architecture Fit**: <how the slice follows existing boundaries and dependency direction>
+- **Architecture Fit**: <how the planned changes follow existing boundaries and dependency direction>
 - **Domain Model**: <concepts, rules, invariants, or small DSL vocabulary>
 - **Pattern Decision**: <concrete design force, pattern adopted or rejected, and reason>
 - **Key Trade-off**: <alternatives considered and why this choice is sufficient now>
@@ -71,7 +71,7 @@ flowchart LR
 
 ## 4. Detailed Design
 
-Keep only concerns relevant to this slice.
+Keep only concerns relevant to this plan.
 
 - **Contract**: <API, event, UI, command, or integration behavior>
 - **Data**: <schema, state, migration, consistency, or caching change>
@@ -110,7 +110,7 @@ Keep these boundaries high level. Create the executable Red–Green–Refactor c
 
 ## 8. Plan Readiness
 
-- [ ] The plan delivers one independently verifiable vertical slice.
+- [ ] The plan defines what to complete this time, covers the technical layers needed for the behavior, and states how to verify the result independently.
 - [ ] Important decisions are stable enough to begin; deferred decisions are explicit.
 - [ ] Existing code, tests, names, and dependencies are grounded in repository evidence.
 - [ ] Task boundaries can be derived without designing the entire parent User Story.

@@ -17,7 +17,7 @@ Break an explicitly approved Implementation Plan into small, executable TDD Task
 
 ## Decompose the Current Plan
 
-Generate Tasks only for the approved Plan boundary. Exclude the parent Story, out-of-scope behavior, and later Plan Map slices.
+Generate Tasks only for the approved Plan boundary. Exclude the parent Story, out-of-scope behavior, and later plans in the Plan Map.
 
 Prefer vertical behavior, risk, or learning boundaries over technical layers. Use one milestone by default; add another only for a real delivery, compatibility, migration, or learning checkpoint.
 

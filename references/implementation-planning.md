@@ -6,21 +6,21 @@ Create planning artifacts only after `references/requirements-analysis.md` reach
 
 1. Preserve the requirement's language, technical terms, identifiers, and links.
 2. If `docs/` does not exist, ask which output directory to use before writing.
-3. For a multi-slice Story, write `docs/YYYY-MM-DD-plan-map-<story-slug>.md` from `assets/plan-map-template.md`.
-4. Write the current slice to `docs/YYYY-MM-DD-implementation-plan-<slice-slug>.md` from `assets/implementation-plan-template.md`.
+3. For a Story that needs more than one plan, write `docs/YYYY-MM-DD-plan-map-<story-slug>.md` from `assets/plan-map-template.md`.
+4. Write the current plan to `docs/YYYY-MM-DD-implementation-plan-<plan-slug>.md` from `assets/implementation-plan-template.md`.
 
-Derive lowercase hyphenated slugs from the Story outcome and selected slice, not from arbitrary file names.
+Derive lowercase hyphenated slugs from the Story outcome and what the current plan will complete, not from arbitrary file names.
 
 ## Map the Story Without Designing It All
 
-An Implementation Plan covers one independently verifiable vertical slice. For a broader Story:
+An Implementation Plan defines what to complete this time and how to verify the result independently. Keep the behavior complete across the technical layers it needs. For a broader Story:
 
-1. Order candidate slices by value, risk, learning, and real dependency.
+1. Order candidate plans by value, risk, learning, and real dependency.
 2. Give each only an observable outcome, ordering reason, dependencies, success evidence, and status.
-3. Mark exactly one slice `Next`; keep the rest `Later`.
-4. Detail only `Next`. Let delivery evidence reorder, split, merge, add, or drop later slices.
+3. Mark exactly one candidate plan `Next`; keep the rest `Later`.
+4. Detail only `Next`. Let delivery evidence reorder, split, merge, add, or drop later plans.
 
-Do not create separate plans for controllers, services, repositories, database work, or other technical layers. For a genuine single-slice requirement, omit the redundant Plan Map.
+Do not create separate plans for controllers, services, repositories, database work, or other technical layers. For a requirement that needs only one plan, omit the redundant Plan Map.
 
 ## Ground the Current Plan
 
@@ -45,4 +45,4 @@ Complete the readiness checklist in the Implementation Plan template. Remove irr
 
 ## Stop After Planning
 
-Print the absolute Plan Map path when created, then the detailed Implementation Plan path. State that the detailed Plan is ready for review and later slices remain intentionally lightweight. Do not create Tasks, detail another Plan, or edit code.
+Print the absolute Plan Map path when created, then the detailed Implementation Plan path. State that the detailed Plan is ready for review and later plans remain intentionally lightweight. Do not create Tasks, detail another Plan, or edit code.

@@ -21,7 +21,7 @@ Analyze the request from both directions:
 - Identify the user or stakeholder, their problem, and the outcome they need.
 - Describe desired behavior with concrete acceptance examples.
 - Define observable success and guardrail signals.
-- Separate in-scope behavior, non-goals, and possible future slices.
+- Separate in-scope behavior, non-goals, and possible future work.
 - Identify domain terms, rules, invariants, permissions, and exceptional cases.
 
 ### Bottom-up
@@ -43,9 +43,9 @@ Classify findings as:
 
 Ask focused questions for material unknowns from a senior developer's perspective. Challenge unclear outcomes and requested mechanisms, but do not ask the user for facts that can be discovered safely from the repository. Ask the smallest useful group of high-impact questions, explain why each decision matters, and wait for the answers before reassessing readiness. Expect multiple rounds when later answers expose new domain rules or boundary decisions; do not compress every possible question into one overwhelming questionnaire.
 
-## Discover Agile Slices
+## Decide What to Complete First
 
-When the requirement is broader than one independently verifiable behavior, discover candidate vertical slices ordered by value, risk, learning, and real dependency. Use them to test whether the Story is understood and whether the first slice can be selected. Do not design the slices in detail and do not turn them into tasks yet.
+When the requirement is broader than one independently verifiable behavior, identify what each candidate plan would complete, ordered by value, risk, learning, and real dependency. Use them to test whether the Story is understood and whether the first plan has a clear scope. Do not design the candidate plans in detail and do not turn them into tasks yet.
 
 ## Requirement Ready Gate
 
@@ -56,7 +56,7 @@ Before proposing the next stage, verify that:
 - Acceptance examples cover the main behavior and important failure cases.
 - Scope, non-goals, domain rules, and constraints are visible.
 - Material unknowns are resolved or explicitly owned.
-- The next small vertical slice can be selected without guessing.
+- What to complete in the next plan can be selected without guessing, with a clear result that can be verified independently.
 
 ## Clarify or Create the Plan
 
@@ -67,4 +67,4 @@ If the requirement is not ready:
 - Stop and wait for the user's answers.
 - Repeat this loop until the Requirement Ready Gate is satisfied.
 
-When the requirement is ready, proceed directly to `references/implementation-planning.md`. Do not emit a separate Requirement Understanding artifact unless the user asks for one. For a broad Story, create a lightweight Plan Map and one detailed Implementation Plan for the recommended next slice. For a single-slice request, create only the detailed plan. Then stop; do not generate tasks or edit production code.
+When the requirement is ready, proceed directly to `references/implementation-planning.md`. Do not emit a separate Requirement Understanding artifact unless the user asks for one. For a broad Story, create a lightweight Plan Map and one detailed Implementation Plan for what is recommended to complete next. For a request that needs only one plan, create only the detailed plan. Then stop; do not generate tasks or edit production code.

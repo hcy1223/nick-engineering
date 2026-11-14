@@ -1,6 +1,6 @@
 ---
 name: nick-engineering
-description: Apply Nick's staged engineering method from requirement discovery through production learning. Use for clarifying one-line requests, issues, or Story documents; mapping vertical slices; creating implementation plans and TDD tasks; implementing approved work or explicit /two-pack local code changes; reviewing reuse, patterns, code smells, and extension points; shaping domain models, DSLs, or Java code; delivering through Git; and learning from production.
+description: Apply Nick's staged engineering method from requirement discovery through production learning. Use for clarifying one-line requests, issues, or Story documents; deciding what to complete in each plan; creating implementation plans and TDD tasks; implementing approved work or explicit /two-pack local code changes; reviewing reuse, patterns, code smells, and extension points; shaping domain models, DSLs, or Java code; delivering through Git; and learning from production.
 ---
 
 # Nick Engineering
@@ -59,8 +59,8 @@ Load another reference only when the current stage requires that concern.
 
 ## Use the Output Assets
 
-- `assets/plan-map-template.md` for a multi-slice Story.
-- `assets/implementation-plan-template.md` for the current slice.
+- `assets/plan-map-template.md` for a Story that needs more than one plan.
+- `assets/implementation-plan-template.md` for what to complete in the current plan.
 - `assets/implementation-task-template.md` for its TDD tasks.
 - `assets/production-learning-template.md` for operational evidence and decisions.
 
