@@ -67,4 +67,4 @@ If the requirement is not ready:
 - Stop and wait for the user's answers.
 - Repeat this loop until the Requirement Ready Gate is satisfied.
 
-When the requirement is ready, proceed directly to `references/implementation-planning.md`. Do not emit a separate Requirement Understanding artifact unless the user asks for one. For a broad Story, create a lightweight Plan Map and one detailed Implementation Plan for what is recommended to complete next. For a request that needs only one plan, create only the detailed plan. Then stop; do not generate tasks or edit production code.
+When the requirement is ready, proceed directly to `references/implementation-planning.md`. Do not emit a separate Requirement Understanding artifact unless the user asks for one. For a broad Story, create a lightweight Plan Map and one detailed Implementation Plan for what is recommended to complete next. For a request that needs only one plan, create only the detailed plan. Then follow the planning handoff and existing authorization; without execution authorization, stop before tasks or production edits.

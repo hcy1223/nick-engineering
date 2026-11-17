@@ -2,11 +2,11 @@
 
 ## 适用与优先级
 
-配合 [历史画像](nick-practice-profile.md)、[领域建模](modeling-and-dsl.md)、[测试](testing.md) 和 [Java 规范](java-style.md) 使用。下面“采用”是基于历史实践整理的目标规则，“改进”是明确修正历史薄弱点；不把改进伪称历史偏好。遵守项目既定语言和工具链版本，不为局部风格强制升级。
+遵循 [入口规则优先级](../SKILL.md#rule-priority-and-strength)。本文是日常实现规范：风格选择默认为偏好，模式按条件采用。遵守项目语言与工具链，不为局部风格强制升级。历史来源和证据限制仅在追溯时读取 [历史画像](nick-practice-profile.md)；Java 语法与版本选择读取 [Java 规范](java-style.md)。
 
 ## 命名与对象
 
-采用业务名词和动词。Command 表示用例输入，Criteria 表示查询条件，Result 表示用例输出，Adapter 表示外部语义边界；不要求简单 CRUD 为每一层创建镜像 DTO。find...OrNull 明确可能缺失，get/require 的缺失语义需由项目统一。布尔查询用 is/has/can，拒绝错误的校验使用 require/assert 加完整业务规则。
+采用业务名词和动词。Command 表示用例输入，Criteria 表示查询条件，Result 表示用例输出，Adapter 表示外部语义边界；不要求简单 CRUD 为每一层创建镜像 DTO。find...OrNull 明确可能缺失，get/require 的缺失语义需由项目统一。布尔查询用 is/has/can，校验函数以 require 加完整业务规则命名，或沿用仓库既有命名。业务校验必须执行：使用 require/check 或具名业务异常，不能依赖可能被关闭的语言内建 assert。
 
 默认 val、不可变集合契约和构造器注入；data class 用于值与传输数据，不机械用于有身份和生命周期的实体。Java 对应 final、适用时的 record 和构造器注入，不模拟 Kotlin 扩展语法。
 
@@ -17,7 +17,7 @@
 采用短表达式函数和可读的集合变换。单个缺失分支可用 `?: return` 或 `?: throw`；复杂规则显式 if/when，多层 let/also 链应拆成具名中间值。不要用 takeUnless 包装复杂副作用。
 
 ```kotlin
-// 改进示例：边界建立合法分页，集合仅用于已界定的小结果集。
+// 示例：边界建立合法分页，集合仅用于已界定的小结果集。
 data class PageRequest(val page: Int, val size: Int) {
     init {
         require(page >= 1)
@@ -33,20 +33,20 @@ fun List<CatalogEntry>.visibleCodes(): List<String> =
 
 ## 设计模式：按变化点选择
 
-以下模式来自重新检查处理器基类、具体实现、调用选择及本人差异。模式识别与原创归属分开：观察到本人维护或使用，不意味着本人创建了整个框架。
+按真实变化点选择，通用取舍见 [implementation-thinking.md](implementation-thinking.md)。没有明确压力时不引入模式。
 
-| 模式 | 证据与置信范围 | 采用条件 | 避免 |
-| --- | --- | --- | --- |
-| Strategy | E7，应用服务选择 supports 匹配的处理器；本人修改选择调用与具体处理器 | 同一业务动作存在独立变化的多种规则 | 为一个稳定分支提前创建策略家族 |
-| Template Method | E7 所在基类固定校验、执行、记录顺序，子类实现资格与发放；仅确认使用上下文 | 算法骨架稳定、步骤变化受控 | 层层继承、为了复用几行代码扩大 protected API |
-| Adapter | E1/E7，领域角色隔离外部查询和奖励发放 | 外部协议需转换成领域语言 | 仅改名转发，外部 DTO 和异常泄漏到领域 |
-| Repository + Query | E1 主动把读取聚合拆出 Repository；E2 查询契约 | 写入与读取模型或复杂度确有差异 | 把局部读写职责分离宣称完整 CQRS/事件溯源 |
-| Mapper / Assembler | E1/E2 的扩展转换和结果组装 | 边界类型与领域类型有不同契约 | 领域依赖 REST 或应用输入，重复映射而无语义差异 |
-| Cache-aside | E4 缓存读取包装 loader | 数据读取成本与陈旧容忍度明确 | 无 TTL、无失效语义，空结果与加载失败混同 |
+| 模式 | 采用条件 | 避免 |
+| --- | --- | --- |
+| Strategy | 同一业务动作存在独立变化的多种规则 | 为稳定分支提前创建策略家族 |
+| Template Method | 算法骨架稳定、步骤变化受控 | 多层继承或扩大 protected API 只为复用几行代码 |
+| Adapter | 外部协议需转换成领域语言 | 仅改名转发，泄漏外部 DTO 和异常 |
+| Repository + Query | 读写模型或复杂度确有差异 | 强行引入完整 CQRS 或事件溯源 |
+| Mapper / Assembler | 边界与领域类型契约不同 | 反向层依赖、无语义差异的重复映射 |
+| Cache-aside | 读取成本与陈旧容忍度明确 | 缺少失效语义，混同空结果与失败 |
 
-### Strategy：历史选择机制的改进写法
+### Strategy：明确匹配契约
 
-历史 `first { supports(...) }` 容易在零匹配时抛技术异常，在多匹配时静默依赖顺序。以下是脱敏后的目标示意，类型与异常需由项目定义：
+`first { supports(...) }` 容易在零匹配时抛技术异常，在多匹配时静默依赖顺序。以下是脱敏后的目标示意，类型与异常需由项目定义：
 
 ```kotlin
 interface BenefitPolicy {
@@ -96,7 +96,7 @@ abstract class EnrollmentPolicy {
 
 ## 测试与评审
 
-沿用 [testing.md](testing.md)。领域规则优先真实对象；外部系统、时钟和随机源才是首选替身边界。配置选择覆盖匹配、不匹配、空输入、多配置优先级与边界时间；存储查询覆盖 NULL、聚合类型、联表重复与分页稳定性。模式代码同时测失败选择与幂等语义。
+测试方法统一遵循 [testing.md](testing.md)。以下仅补充本类代码的场景选择：配置选择覆盖匹配、不匹配、空输入、多配置优先级与边界时间；存储查询覆盖 NULL、聚合类型、联表重复与分页稳定性。模式代码同时测失败选择与幂等语义。
 
 ```kotlin
 // 脱敏目标示意；真实策略和固定输入，不 Mock 内部领域服务。

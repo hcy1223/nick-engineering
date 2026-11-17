@@ -10,7 +10,7 @@ Suitable work includes local function logic changes, small bug fixes, local vari
 
 Exclude database schema, database constraints, and data migrations. Also do not admit changes requiring unresolved cross-module design or external contract changes. Explain the concrete mismatch and ask whether to enter the standard planning workflow; do not silently create planning artifacts or start implementation.
 
-Before the first implementation edit, apply [the shared clean-baseline check](task-implementation.md#enforce-a-clean-baseline). No Plan or Task approval is required for this workflow.
+Before the first implementation edit, apply [the shared baseline review](task-implementation.md#review-the-baseline). No Plan or Task approval is required for this workflow.
 
 ## coder → cleaner
 

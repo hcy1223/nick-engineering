@@ -14,6 +14,16 @@ Treat engineering as one learning loop:
 
 Working code is the floor. Optimize for sound product decisions, clear domain expression, maintainable code, trustworthy tests, safe delivery, and observable production behavior.
 
+## Rule Priority and Strength
+
+Apply host/system instructions first, then explicit user instructions and authorization, then repository rules, supported toolchain and existing contracts, then this skill's defaults. Resolve same-level instructions by scope and specificity. Personal style does not authorize changing versions, public contracts, or unrelated code. Surface an unresolved conflict only when it affects the requested work.
+
+- **Required** (`must`, `do not`, `必须`, `禁止`): constraints within their stated scope, subject to the priority above.
+- **Default** (`prefer`, `default`, `采用`, `优先`): use when compatible with the repository; deviate for concrete design or compatibility reasons.
+- **Conditional / optional** (`when`, `may`, `可`): apply only when the stated need exists. Pattern lists and examples are not mandatory architecture.
+
+Workflow authorization lives here and in workflow references; testing methodology lives in [testing.md](references/testing.md). Language references add language-specific decisions. Historical evidence explains provenance and never overrides current rules.
+
 ## Select the Workflow
 
 Use the standard workflow below by default. An explicit `/two-pack <change>` or a natural-language request to use two-pack selects [the minimal workflow](references/two-pack.md): `newtask → coder → cleaner → done`. This invocation authorizes both execution stages without Plan or Task artifacts or intermediate approval. Do not infer this mode merely because a change looks small.
@@ -30,13 +40,15 @@ Plan Map, Implementation Plan, and TDD Task are artifacts. Coder and cleaner are
 | --- | --- | --- |
 | Requirement Intake | Clarification or Requirement Ready | Material ambiguity is resolved |
 | Planning | Plan Map when needed, plus one detailed Implementation Plan | User explicitly approves the detailed Plan |
-| Task Breakdown | TDD tasks for the approved Plan | User approves a concrete Task and asks to execute it |
+| Task Breakdown | TDD tasks for the approved Plan | User authorizes a concrete Task, a Task group, or execution of the approved Plan |
 | Task Implementation | Tested increment and delivery evidence | User authorizes delivery or repository policy permits it |
 | Production Learning | Evidence and resulting decision | User selects or confirms what comes next |
 
+An explicit authorization to execute an approved Plan or a named group of Tasks covers task breakdown and continuous coder → cleaner execution for that scope. Do not ask again at each Task. Approval of a Plan alone authorizes breakdown, not implementation. Stop for material ambiguity, scope or key design changes, verification blockers, or exhausted authorization. Later Plans and delivery actions remain outside this authorization.
+
 ## Shared Execution Rules
 
-Both workflows require a clean Git baseline before their first implementation edit; follow [the baseline check](references/task-implementation.md#enforce-a-clean-baseline). Do not repeat that check between coder and cleaner against changes made by the current run.
+Both workflows require an inspected, safe Git baseline before their first implementation edit; follow [the baseline review](references/task-implementation.md#review-the-baseline). Existing changes do not automatically block implementation. Preserve them and distinguish them from this run’s changes.
 
 With Node.js 22.18+ available, use the bundled [check-baseline.ts](scripts/check-baseline.ts) as described in that reference. For maintenance of this skill itself, run [validate-skill.ts](scripts/validate-skill.ts) to check metadata and local resource links; structural validity does not establish workflow readiness or user approval.
 
@@ -47,13 +59,13 @@ Run [coder](references/stages/coder.md) then [cleaner](references/stages/cleaner
 - Requirement intake and readiness: [references/requirements-analysis.md](references/requirements-analysis.md)
 - Plan Map and Implementation Plan creation: [references/implementation-planning.md](references/implementation-planning.md)
 - Task breakdown from an approved Plan: [references/implementation-tasks.md](references/implementation-tasks.md)
-- Execution of an approved Task and clean-worktree gate: [references/task-implementation.md](references/task-implementation.md)
+- Execution of authorized Tasks and baseline review: [references/task-implementation.md](references/task-implementation.md)
 - Reuse, patterns, code smells, and extension points: [references/implementation-thinking.md](references/implementation-thinking.md)
 - Domain modeling, architecture, and DSLs: [references/modeling-and-dsl.md](references/modeling-and-dsl.md)
 - TDD, Chicago testing, and test boundaries: [references/testing.md](references/testing.md)
 - Delivery, operation, observability, and feedback: [references/delivery-and-operations.md](references/delivery-and-operations.md)
-- Historical Java/Kotlin practice profile, anonymized examples, and evidence limits: [references/nick-practice-profile.md](references/nick-practice-profile.md). Read when reproducing or reviewing Nick’s coding style.
-- Kotlin implementation choices and evidence-based pattern selection: [references/kotlin-practices.md](references/kotlin-practices.md). Read for Kotlin changes; apply the pattern decision criteria to Java too.
+- Historical Java/Kotlin practice profile, anonymized examples, and evidence limits: [references/nick-practice-profile.md](references/nick-practice-profile.md). Read only when tracing style provenance or checking historical claims.
+- Kotlin implementation choices and conditional pattern selection: [references/kotlin-practices.md](references/kotlin-practices.md). Read for Kotlin changes; apply the pattern decision criteria to Java too.
 - Java practices and naming: [references/java-style.md](references/java-style.md)
 - Git safety and English Conventional Commits: [references/git-workflow.md](references/git-workflow.md)
 

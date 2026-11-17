@@ -45,4 +45,4 @@ Complete the readiness checklist in the Implementation Plan template. Remove irr
 
 ## Stop After Planning
 
-Print the absolute Plan Map path when created, then the detailed Implementation Plan path. State that the detailed Plan is ready for review and later plans remain intentionally lightweight. Do not create Tasks, detail another Plan, or edit code.
+Print the absolute Plan Map path when created, then the detailed Implementation Plan path. State that the detailed Plan is ready for review and later plans remain intentionally lightweight. Without existing authorization for later stages, do not create Tasks or edit code. If the user already authorized execution of this concrete Plan, continue through task breakdown and implementation. Do not detail another Plan.

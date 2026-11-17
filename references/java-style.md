@@ -1,6 +1,6 @@
 # Modern Java Style
 
-Use modern Java to make domain meaning, valid state, and control-flow completeness visible to the compiler and the reader. Treat working code as the floor; optimize for correctness, clarity, evolvability, and operational safety.
+Use modern Java to make domain meaning, valid state, and control-flow completeness visible to the compiler and the reader. Follow the priority and rule levels in [SKILL.md](../SKILL.md#rule-priority-and-strength). Language style is a default within the existing toolchain, not authorization for modernization.
 
 ## Keep the Platform Modern
 
@@ -15,16 +15,41 @@ Use modern Java to make domain meaning, valid state, and control-flow completene
 - Make classes and fields `final` by default. Make mutability a deliberate, localized design decision.
 - Construct objects in a valid, complete state and preserve their invariants throughout their lifetime.
 - Return new values instead of mutating shared state when the domain permits it.
-- Do not place raw arrays inside immutable types. Prefer immutable collections, `List.copyOf`, or defensive copies at boundaries.
+- Prefer immutable component types and unmodifiable collections; use defensive copies at boundaries.
 - Do not expose mutable collections or retain caller-owned mutable data.
 - Favor composition over inheritance. Use inheritance only for a genuine substitutable relationship with stable semantics.
 - Never depend on iteration order from unordered collections such as `Set.of` or `Map.of`.
+
+Records are shallowly immutable: final references can still point to mutable objects. `List.of` and `List.copyOf` make the list unmodifiable, not its elements. Prefer immutable component types and copy incoming collections; validate required values at construction. See the [List API contract](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html).
+
+Avoid array components in immutable public data contracts. If a protocol or performance requirement demands an array, defensively copy both incoming and outgoing arrays and explicitly define content equality; do not assume a record supplies array-content equality. `final` alone does not establish deep immutability or make an entire workflow thread-safe.
+
+```java
+// Anonymized, standalone Java 17+ data example.
+import java.util.List;
+import java.util.Objects;
+
+record LineItem(String code, int quantity) {
+    LineItem {
+        Objects.requireNonNull(code);
+        if (quantity < 1) throw new IllegalArgumentException("quantity must be positive");
+    }
+}
+
+record Purchase(List<LineItem> items) {
+    Purchase {
+        items = List.copyOf(items);
+    }
+}
+```
+
+Composition is the default for reuse. Allow deliberate extension for framework proxies or stable templates; do not apply `final` where it breaks those contracts.
 
 ## Choose the Data Model Deliberately
 
 - Use records as transparent immutable data carriers when every component is legitimately part of the public state.
 - Do not use records where private representation, identity-based lifecycle, hidden state, or substantial encapsulated behavior matters.
-- Decide record-versus-class conventions deliberately at an architectural boundary; avoid accidental mixtures of `foo()` and `getFoo()` APIs.
+- Before converting a public DTO to a record, review accessor conventions, serialization, reflection, framework support, binary/source compatibility, and clients.
 - Use sealed interfaces or classes to model a closed set of alternatives.
 - Keep sealed hierarchies shallow and explicit. Avoid `non-sealed` unless openness is a real domain requirement.
 - Introduce value types for identifiers, money, quantities, ranges, and domain states when they carry rules or prevent confusion.
@@ -37,7 +62,27 @@ Use modern Java to make domain meaning, valid state, and control-flow completene
 - Prefer switch expressions when a branch computes a value.
 - Omit a catch-all `default` for closed enums and sealed hierarchies when the compiler can enforce exhaustiveness. Let a newly added case break compilation at every incomplete decision point.
 - Use record patterns to expose the exact data involved in a decision.
-- Use `var` inside nested patterns when it emphasizes exceptional type constraints rather than hiding useful information.
+- Arrow syntax alone does not guarantee exhaustive handling. Decide null handling explicitly.
+
+```java
+// Anonymized Java 21+ example; component accessors are intentional API.
+sealed interface DispatchResult permits Sent, Rejected {}
+record Sent(String receipt) implements DispatchResult {}
+record Rejected(String reason) implements DispatchResult {}
+
+final class DispatchMessages {
+    static String describe(DispatchResult result) {
+        return switch (result) {
+            case Sent(var receipt) -> receipt;
+            case Rejected(var reason) -> reason;
+        };
+    }
+}
+```
+
+Use `var` in record patterns when the declared component type is sufficient. Write an explicit narrower type only when it expresses a meaningful supported match. Do not introduce a sealed hierarchy solely to eliminate a small stable conditional.
+
+
 
 ## Use Optional Strictly
 
@@ -75,14 +120,9 @@ Validate external data at entry boundaries and establish invariants before it re
 - Avoid `I` prefixes for interfaces and `Impl` suffixes for implementations. Name the role and distinguish implementations by policy or mechanism.
 - Keep public APIs minimal and cohesive. Reduce visibility by default.
 
-## Preserve Behavioral Confidence
+## Java-Specific Verification
 
-- Follow TDD and express tests in domain language.
-- Prefer real objects, observable state, and behavioral assertions. Substitute only true boundaries.
-- Do not assert an unordered collection through `toString()` or incidental iteration order. Assert membership, size, or domain meaning.
-- Test every case in a closed hierarchy and retain compiler exhaustiveness as an additional safety net.
-- Use test-data builders when they emphasize relevant differences and preserve valid defaults.
-- Keep framework annotations and persistence concerns outside the domain model when practical.
+Follow [testing.md](testing.md) for TDD, real collaborators, and boundary substitutes. For Java changes, verify collection membership and cardinality rather than `toString()` or unordered iteration. Model and test order explicitly when it is a contract. Exercise relevant cases of closed hierarchies alongside compiler exhaustiveness checks.
 
 ## Review a Modernization
 
@@ -99,7 +139,7 @@ Before completing a Java change, verify that:
 
 When repository conventions conflict with these preferences, preserve behavior and plan a coherent migration. Do not create a half-modernized codebase through unrelated local style changes.
 
-## Java 9–25 Adoption Boundaries
+## Feature Adoption Boundaries
 
 The following rules incorporate the supplied modern-Java article as user-provided preferences, rather than attributing them to historical code evidence. Use the configured compiler release, runtime, libraries, annotation processors, and documentation toolchain as the admission gate. Do not enable preview features just to satisfy a style preference.
 
@@ -116,62 +156,3 @@ The following rules incorporate the supplied modern-Java article as user-provide
 | Markdown documentation comments | 23 | Prefer `///` when the documentation toolchain supports it |
 
 Reference: [Oracle language release summary](https://docs.oracle.com/en/java/javase/24/language/java-language-changes-summary.html), [Markdown documentation comments](https://docs.oracle.com/en/java/javase/24/javadoc/using-markdown-documentation-comments.html).
-
-## Enforce Immutability Beyond Final Fields
-
-Records are shallowly immutable: final references can still point to mutable objects. `List.of` and `List.copyOf` make the list unmodifiable, not its elements. Prefer immutable component types and copy incoming collections; validate required values at construction. See the [List API contract](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html).
-
-Avoid array components in immutable public data contracts. If a protocol or performance requirement demands an array, defensively copy both incoming and outgoing arrays and explicitly define content equality; do not assume a record supplies array-content equality. `final` alone does not establish deep immutability or make an entire workflow thread-safe.
-
-```java
-// Anonymized, standalone Java 17+ data example.
-import java.util.List;
-import java.util.Objects;
-
-record LineItem(String code, int quantity) {
-    LineItem {
-        Objects.requireNonNull(code);
-        if (quantity < 1) throw new IllegalArgumentException("quantity must be positive");
-    }
-}
-
-record Purchase(List<LineItem> items) {
-    Purchase {
-        items = List.copyOf(items);
-    }
-}
-```
-
-Composition remains the default for reuse. Allow deliberate extension where a framework or stable template requires it; do not apply `final` indiscriminately to framework-proxied classes.
-
-## Make Closed Alternatives Compiler-Checked
-
-Keep sealed hierarchies shallow. Avoid `non-sealed` unless opening that extension boundary is intentional and documented. Prefer arrow switches. For exhaustive switches over closed alternatives, enumerate the alternatives and omit a catch-all `default` so adding an alternative exposes missing handling at compilation. Arrow syntax alone does not make every switch statement exhaustive; exhaustiveness and null handling remain explicit design decisions.
-
-```java
-// Anonymized Java 21+ example; component accessors are intentional API.
-sealed interface DispatchResult permits Sent, Rejected {}
-record Sent(String receipt) implements DispatchResult {}
-record Rejected(String reason) implements DispatchResult {}
-
-final class DispatchMessages {
-    static String describe(DispatchResult result) {
-        return switch (result) {
-            case Sent(var receipt) -> receipt;
-            case Rejected(var reason) -> reason;
-        };
-    }
-}
-```
-
-Use `var` in record patterns when the declared component type is sufficient. Write an explicit narrower type only when it expresses a meaningful supported match. Do not introduce a sealed hierarchy solely to eliminate a small stable conditional.
-
-## Preserve API and Test Semantics
-
-Use Optional for absence-bearing return contracts; public APIs are the primary use, and private helpers may use it when that keeps the contract coherent. Avoid Optional fields and parameters. Avoid `isPresent()` followed by `get()`; use mapping, fallback, `ifPresent`, or `orElseThrow` according to the actual behavior. The `Opt` suffix identifies an Optional container, not a nullable variable.
-
-Record accessors differ from bean getters. Before converting a public DTO, review serialization, reflection, framework support, binary/source compatibility, and clients. Choose records at transparent data boundaries; retain behavior-rich objects for business invariants. DOP can be adopted within a bounded context without forcing a system-wide DTO rewrite.
-
-Do not depend on `Map.of` or `Set.of` iteration order; assert membership and cardinality. When order is a business contract, model and assert it explicitly. Do not assert collections through `toString()`.
-
-For broad repetitive migrations, use OpenRewrite or an equivalent automated transformation and review the resulting behavior. Small semantic changes still require deliberate design rather than a forced recipe. Valhalla is a future-facing consideration, not a dependency or assumption of this guideline.

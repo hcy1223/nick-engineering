@@ -2,7 +2,7 @@
 
 ## Goal and Input
 
-Implement the authorized outcome. Receive either an approved TDD Task with its Plan from the standard workflow, or the user's bounded change request from two-pack. The calling workflow owns authorization and the initial clean-baseline check; do not introduce another approval gate.
+Implement the authorized outcome. Receive either an approved TDD Task with its Plan from the standard workflow, or the user's bounded change request from two-pack. The calling workflow owns authorization and the initial baseline review; do not introduce another approval gate.
 
 ## Execution
 
@@ -11,7 +11,7 @@ Implement the authorized outcome. Receive either an approved TDD Task with its P
 - For behavior-preserving local renames or mechanical edits, use relevant existing tests, compilation, and reference checks; do not invent tests that merely mirror the edit.
 - Run focused verification and the broader checks required by the repository or affected behavior. Record what actually ran and distinguish pre-existing failures from new ones.
 
-Load [Java guidance](../java-style.md) or [delivery guidance](../delivery-and-operations.md) only when relevant. If evidence invalidates the authorized boundary, pause through the calling workflow rather than expanding the change.
+Load [Kotlin guidance](../kotlin-practices.md), [Java guidance](../java-style.md) or [delivery guidance](../delivery-and-operations.md) only when relevant. If evidence invalidates the authorized boundary, pause through the calling workflow rather than expanding the change.
 
 ## Completion and Handoff
 

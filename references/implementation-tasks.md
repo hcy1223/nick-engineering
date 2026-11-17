@@ -13,7 +13,7 @@ Break an explicitly approved Implementation Plan into small, executable TDD Task
 1. Read the complete Plan and preserve its language and domain terms.
 2. Derive the slug from its filename by removing `.md`, an optional date, and the `implementation-plan-` prefix.
 3. Write `tasks/YYYY-MM-DD-tasks-from-<plan-slug>.md` from `assets/implementation-task-template.md`.
-4. If `tasks/` does not exist, ask permission before creating it.
+4. Create `tasks/` if needed as part of the authorized breakdown.
 
 ## Decompose the Current Plan
 
@@ -51,4 +51,4 @@ For migrations or operational work, RED may be a repeatable verification that fa
 
 ## Stop After Task Breakdown
 
-Print the absolute Task-list path and identify the first unblocked Task. Do not edit implementation or test code. Wait until the user approves a concrete Task, asks to execute it, and the target repository has a clean worktree.
+Print the absolute Task-list path and identify the first unblocked Task. Do not edit implementation or test code. If execution of this Plan or selected Tasks is already authorized, continue through `task-implementation.md` within that scope. Otherwise wait for execution authorization.

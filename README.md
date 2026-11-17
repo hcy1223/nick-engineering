@@ -39,13 +39,13 @@
 Requirement Intake（一句话 / Issue / Story 文档）
     --多轮澄清后足够清晰--> Plan Map（需要分次完成时）+ 第一个 Implementation Plan
     --用户批准--> TDD Task Breakdown
-    --Task 已评审批准 + 用户要求执行 + Git clean--> Task Implementation
+    --Task / Task 组 / Plan 执行已授权 + 基线已审阅--> Task Implementation
     --交付与观察--> Production Learning
 ```
 
-默认标准流程中，最初的一句话、Issue 或 Story 文档都会启动需求分析，而不是直接触发实现。需求模糊时，Agent 每轮只提出一组高价值问题并等待回答；达到 Requirement Ready 后，需要分次完成的 Story 会生成轻量 Plan Map 和第一个详细 Implementation Plan，一次就能完成的需求只生成详细 Plan，然后停止。Plan Map 是对后续要做什么及其顺序的初步安排，可以根据反馈调整，不代表后续 Plan 已经设计或批准。用户明确认可当前详细 Plan 后，Nick 才创建它的 Task 列表；Task 创建完成后再次停止。只有 Task 已被用户评审批准、用户明确要求执行，并且 `git status --porcelain` 没有任何输出时，Nick 才会开始写测试或实现代码。
+默认标准流程保留 Plan 和 Task 评审。用户也可以一次授权执行已批准的整个 Plan 或指定的一组 Tasks：Agent 会拆分 Task，并按依赖顺序连续执行 coder → cleaner，无需逐个再次批准。仅批准 Plan 表示可以拆 Task，不等于授权实现；用户明确要求阶段结束后停止时仍会停止。范围、关键设计变化或验证阻塞需要新的决定。
 
-如果 Git 工作区存在 staged、unstaged 或 untracked 文件，Nick 只报告状态并停止，不会自动 commit、stash、reset、删除或隐藏已有改动来绕过门禁。Plan 和 Task 文件若保存在目标仓库中，也需要先由用户决定如何纳入干净基线。
+首次实现前检查 Git 状态并审阅已有改动，不要求工作区绝对 clean。与任务无关且可安全保留的本地启动文件、用户已有改动、Plan/Task 文档可以留在基线中。文件名不足以判断是否无关；共享配置、锁文件等需要检查实际影响。改动冲突、无法安全隔离或影响验证时暂停，不自动 commit、stash、reset、删除或隐藏已有改动。用户或仓库明确要求 clean 时遵守更严格要求。
 
 ## 目录
 
@@ -71,6 +71,8 @@ nick-engineering/
     ├── implementation-planning.md
     ├── implementation-tasks.md
     ├── implementation-thinking.md
+    ├── kotlin-practices.md
+    ├── nick-practice-profile.md
     ├── java-style.md
     ├── modeling-and-dsl.md
     ├── requirements-analysis.md
@@ -150,7 +152,7 @@ git -C "$HOME/.agents/skills/nick-engineering" pull
 
 ## 使用
 
-标准流程把 Plan、Task 和 Implementation 作为三个独立步骤使用。Nick 会在每个阶段结束后停止，等待用户 Review 和明确授权，不会从模糊需求直接跳到写代码。
+标准流程把 Plan、Task 和 Implementation 作为三个独立步骤使用。未获得后续执行授权时，Nick 会在阶段结束后停止，等待用户 Review，不会从模糊需求直接跳到写代码。
 
 以下示例使用 `$nick-engineering` 表示目标 Agent 的具名 Skill 调用语法；如果平台使用其他语法，请替换为对应形式。
 
@@ -176,11 +178,11 @@ newtask → coder → cleaner → done
 
 适用于局部函数修改、小缺陷修复、局部变量或私有方法重命名，以及保持外部契约的局部模块调整。**不包含数据库 schema、约束或数据迁移变更。** 发现需要这些变更或更大范围设计时，说明原因并等待用户决定是否转入标准流程，不自动扩展工作。
 
-首次修改前仍要求 Git 工作区 clean；coder 和 cleaner 之间不因本次产生的改动重新触发该门禁。调用即授权本次两阶段执行，但不授权 commit、push 或部署。必要验证未通过或无法完成时，报告阻塞，不标记 done。
+首次修改前审阅并保护已有 Git 改动；coder 和 cleaner 之间无需对本次改动重复设卡。调用即授权本次两阶段执行，但不授权 commit、push 或部署。必要验证未通过或无法完成时，报告阻塞，不标记 done。
 
 `/two-pack` 是 Skill 加载后识别的工作流调用约定，本仓库不自动向宿主注册原生斜杠命令。平台可以提供适配，不支持时使用上述自然语言调用。
 
-标准流程仍保留 Plan、Task 审批，获准执行的具体 Task 同样复用 coder → cleaner。Plan 和 Task 是上游产物，不是 two-pack 的必需输入。阶段职责分别定义在 [coder](references/stages/coder.md) 和 [cleaner](references/stages/cleaner.md)，流转规则定义在 [two-pack](references/two-pack.md)。
+标准流程支持逐阶段审批或一次授权执行，获准执行的 Task 同样复用 coder → cleaner。Plan 和 Task 是上游产物，不是 two-pack 的必需输入。阶段职责分别定义在 [coder](references/stages/coder.md) 和 [cleaner](references/stages/cleaner.md)，流转规则定义在 [two-pack](references/two-pack.md)。
 
 ### 1. 让 Nick 从需求创建 Plan Map 和 Implementation Plan
 
@@ -236,10 +238,22 @@ Review Task 列表后，明确批准一个具体 Task 并要求执行：
 我已经 Review 并批准 tasks/<task-list>.md 中的 Task 1.1。
 
 使用 $nick-engineering 执行 Task 1.1。
-开始前检查 git status；只有工作区 clean 才能按 TDD 开始实现。
+开始前检查 git status 并审阅已有改动，保留与本任务无关的本地修改。
 ```
 
-Nick 会在每个已批准 Task 开始前运行 `git status --porcelain`。如果存在 staged、unstaged 或 untracked 文件，它只报告状态并停止；工作区 clean 时，才会从失败测试开始执行 Red–Green–Refactor。完成实现不等于授权提交，仍需用户另外明确要求 commit。
+Nick 在首次实现前审阅 Git 基线；已有改动可安全保留时继续，有冲突或无法隔离时暂停。完成实现不等于授权提交。
+
+也可以一次授权：
+
+```text
+我批准 docs/<implementation-plan>.md，请拆分 Tasks 并连续执行整个 Plan。
+```
+
+或指定 Task 范围：
+
+```text
+我批准并授权连续执行 Task 1.1 到 1.3，完成后停止。
+```
 
 ### 不支持具名 Skill 的 Agent
 

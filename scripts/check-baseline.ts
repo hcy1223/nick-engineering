@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
-// Exit codes: 0 = clean, 1 = dirty, 2 = usage or Git error.
+// Exit codes: 0 = clean, 1 = changes requiring review, 2 = usage or Git error.
 const args = process.argv.slice(2);
 if (args.length === 1 && args[0] === '--help') {
   console.log('Usage: node check-baseline.ts [repository-directory]\nChecks the entire worktree, including all untracked files. Never modifies it.');
@@ -28,7 +28,7 @@ if (args.length === 1 && args[0] === '--help') {
       console.error(`Git status failed: ${status.error?.message ?? status.stderr.trim()}`);
       process.exitCode = 2;
     } else if (status.stdout.length > 0) {
-      console.error('Baseline is not clean. Stop before the first implementation edit.');
+      console.error('Baseline has existing changes. Review and preserve them before implementation.');
       process.stderr.write(status.stdout);
       process.exitCode = 1;
     } else {
