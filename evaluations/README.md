@@ -57,3 +57,24 @@ permission prompts from approval invented by the skill. Repeat a failing scenari
 with fresh fixtures before changing rules. Record model variation and environmental
 limits separately from demonstrated skill defects. These four cases are a starting
 suite, not evidence of general workflow readiness.
+
+## Automated outcome checks
+
+After an agent run, execute:
+
+```sh
+node evaluations/check.ts /tmp/nick-eval-<unique-run> startup-changes
+```
+
+The checker emits JSON with baseline preservation, HEAD, independent behavior
+probes, and actual `npm test` output. Exit `0` means automated checks passed,
+`1` means an outcome failed, and `2` means the checker could not operate. Tests
+execute fixture code; use trusted local runs only. Each command has a timeout.
+The verification-failure case allows implementation to remain blocked, but requires
+the original integration failure and protected files to remain intact.
+
+Use [report-template.md](report-template.md) to finish trace review. The checker
+cannot establish approval behavior, RED/GREEN order, cleaner review, no remote
+push, or honest final claims. A successful JSON report therefore remains
+`pending-trace-review`, not an overall pass. Retain the baseline evidence outside
+the agent's allowed write scope when evaluating an untrusted runner.

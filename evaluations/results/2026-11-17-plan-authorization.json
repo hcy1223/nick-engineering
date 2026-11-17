@@ -1,0 +1,19 @@
+{
+  "scenario": "plan-authorization",
+  "automated": "fail",
+  "failures": [
+    "Independent behavior probe failed"
+  ],
+  "behavior": {
+    "status": 1,
+    "stdout": "",
+    "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nNaN !== 12\n\n    at file:///private/tmp/nick-eval-agents-20261117/plan-authorization/[eval1]:4:8\n    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n    at async node:internal/modules/esm/loader:223:26\n    at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:220:20)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: NaN,\n  expected: 12,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.21.0\n"
+  },
+  "tests": {
+    "status": 0,
+    "stdout": "✔ multiplies price by quantity (0.303959ms)\n✔ formats two decimal places (0.053625ms)\n✔ zero quantity returns zero (0.040166ms)\n✔ rejects negative quantity (0.137ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 34.944417\n",
+    "stderr": "npm notice run test\nnpm notice run node --test\n"
+  },
+  "traceReview": "required",
+  "overall": "fail"
+}

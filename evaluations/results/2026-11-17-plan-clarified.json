@@ -1,0 +1,17 @@
+{
+  "scenario": "plan-authorization",
+  "automated": "pass",
+  "failures": [],
+  "behavior": {
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "tests": {
+    "status": 0,
+    "stdout": "✔ multiplies price by quantity (0.292791ms)\n✔ formats two decimal places (0.047167ms)\n✔ zero quantity returns zero (0.035167ms)\n✔ omitted quantity defaults to one (0.032917ms)\n✔ negative quantity raises RangeError (0.13275ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 32.96475\n",
+    "stderr": "npm notice run test\nnpm notice run node --test\n"
+  },
+  "traceReview": "required",
+  "overall": "pending-trace-review"
+}

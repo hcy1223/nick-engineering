@@ -1,0 +1,17 @@
+{
+  "scenario": "startup-changes",
+  "automated": "pass",
+  "failures": [],
+  "behavior": {
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "tests": {
+    "status": 0,
+    "stdout": "✔ multiplies price by quantity (0.30275ms)\n✔ formats two decimal places (0.052833ms)\n✔ returns zero for zero quantity (0.039583ms)\n✔ defaults omitted quantity to one (0.035583ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 36.775833\n",
+    "stderr": "npm notice run test\nnpm notice run node --test\n"
+  },
+  "traceReview": "required",
+  "overall": "pending-trace-review"
+}
