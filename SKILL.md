@@ -67,6 +67,7 @@ Run [coder](references/stages/coder.md) then [cleaner](references/stages/cleaner
 - Historical Java/Kotlin practice profile, anonymized examples, and evidence limits: [references/nick-practice-profile.md](references/nick-practice-profile.md). Read only when tracing style provenance or checking historical claims.
 - Kotlin implementation choices and conditional pattern selection: [references/kotlin-practices.md](references/kotlin-practices.md). Read for Kotlin changes; apply the pattern decision criteria to Java too.
 - Java practices and naming: [references/java-style.md](references/java-style.md)
+- Error review, recurring mistakes, and scoped rule improvement: [references/error-learning.md](references/error-learning.md). Load after explicit corrections, repeated mistakes, or relevant evaluation failures; consult matching lessons during related work.
 - Git safety and English Conventional Commits: [references/git-workflow.md](references/git-workflow.md)
 
 Load another reference only when the current stage requires that concern.
@@ -77,5 +78,6 @@ Load another reference only when the current stage requires that concern.
 - `assets/implementation-plan-template.md` for what to complete in the current plan.
 - `assets/implementation-task-template.md` for its TDD tasks.
 - `assets/production-learning-template.md` for operational evidence and decisions.
+- `assets/error-review-template.md` for evidenced mistakes and prevention proposals.
 
 Copy and adapt assets; do not edit them in place. Keep artifacts proportional to risk.

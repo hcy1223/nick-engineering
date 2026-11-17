@@ -311,3 +311,11 @@ node /path/to/nick-engineering/scripts/check-baseline.ts /path/to/repository
 ```
 
 这项验证确认 OpenAI/Codex 兼容性，不代表其他 Agent 平台的安装或调用方式完全相同。OpenAI/Codex 适配背景参见 [Codex Build skills documentation](https://learn.chatgpt.com/docs/build-skills)。
+
+## 错误复盘与规则改进
+
+明确的用户纠正、重复失误或评估失败会触发 [错误复盘机制](references/error-learning.md)。先修复当前任务，再记录预期、实际行为、证据、原因、预防措施和验证结果。相同原因的再次发生追加到已有记录，不重复堆规则。
+
+项目经验默认保存在目标仓库已有学习目录或 `docs/engineering-lessons/`；维护本 Skill 时，可复用经验保存在 `lessons/`。只按当前任务的触发条件检索相关记录，不全量加载。经确认后，将经验落到最合适的代码测试、工具、项目约定或 Skill 参考文档中；规则应用后仍需实际验证，也可以合并或淘汰。不自动修改其他位置安装的 Skill。
+
+行为评估的准备与验收方法见 [evaluations/README.md](evaluations/README.md)，使用 TypeScript 生成隔离夹具。
