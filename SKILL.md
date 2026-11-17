@@ -1,6 +1,6 @@
 ---
 name: nick-engineering
-description: Apply Nick's staged engineering method from requirement discovery through production learning. Use for clarifying one-line requests, issues, or Story documents; deciding what to complete in each plan; creating implementation plans and TDD tasks; implementing approved work or explicit /two-pack local code changes; reviewing reuse, patterns, code smells, and extension points; shaping domain models, DSLs, or Java code; delivering through Git; and learning from production.
+description: Apply Nick's staged engineering method from requirement discovery through production learning. Use for clarifying one-line requests, issues, or Story documents; deciding what to complete in each plan; creating implementation plans and TDD tasks; implementing approved work or explicit /two-pack local code changes; reviewing reuse, patterns, code smells, and extension points; shaping domain models, DSLs, or Java/Kotlin code; delivering through Git; and learning from production.
 ---
 
 # Nick Engineering
@@ -52,6 +52,8 @@ Run [coder](references/stages/coder.md) then [cleaner](references/stages/cleaner
 - Domain modeling, architecture, and DSLs: [references/modeling-and-dsl.md](references/modeling-and-dsl.md)
 - TDD, Chicago testing, and test boundaries: [references/testing.md](references/testing.md)
 - Delivery, operation, observability, and feedback: [references/delivery-and-operations.md](references/delivery-and-operations.md)
+- Historical Java/Kotlin practice profile, anonymized examples, and evidence limits: [references/nick-practice-profile.md](references/nick-practice-profile.md). Read when reproducing or reviewing Nick’s coding style.
+- Kotlin implementation choices and evidence-based pattern selection: [references/kotlin-practices.md](references/kotlin-practices.md). Read for Kotlin changes; apply the pattern decision criteria to Java too.
 - Java practices and naming: [references/java-style.md](references/java-style.md)
 - Git safety and English Conventional Commits: [references/git-workflow.md](references/git-workflow.md)
 
